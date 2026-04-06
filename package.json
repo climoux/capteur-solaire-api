@@ -1,0 +1,50 @@
+{
+  "name": "capteur-solaire-api",
+  "version": "1.0.0",
+  "description": " API REST pour le transfert de données et le contrôle d'un capteur solaire à air. Utilise le framework Fastify avec Node.js. Code écrit en TypeScript. Projet de Terminale STI2D.",
+  "keywords": [
+    "api",
+    "rest",
+    "node",
+    "javascript",
+    "typescript",
+    "fastify"
+  ],
+  "homepage": "https://github.com/climoux/capteur-solaire-api#readme",
+  "bugs": {
+    "url": "https://github.com/climoux/capteur-solaire-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/climoux/capteur-solaire-api.git"
+  },
+  "license": "MIT",
+  "author": "Clément Menguy",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/express": "^4.0.4",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/websocket": "^11.2.0",
+    "@prisma/adapter-pg": "^7.6.0",
+    "dotenv": "^17.4.1",
+    "fastify": "^5.8.4",
+    "mqtt": "^5.15.1",
+    "prisma": "^7.6.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node24": "^24.0.4",
+    "@types/cors": "^2.8.19",
+    "@types/node": "^25.5.2",
+    "@types/ws": "^8.18.1",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}

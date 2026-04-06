@@ -1,0 +1,100 @@
+generator client {
+    provider = "prisma-client"
+    output   = "./generated"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+// Enums
+enum FanMode {
+    manual
+    auto
+}
+
+enum EventType {
+    connect
+    disconnect
+    error
+    telemetry
+}
+
+enum CommandType {
+    temperature
+    fan
+    trapdoor
+}
+
+enum CommandStatus {
+    pending
+    sent
+    ack
+}
+
+// Models
+model Device {
+    deviceId     String    @id @unique @db.VarChar(20)
+    deviceSecret String    @unique @db.VarChar(32)
+    lastSeen     DateTime?
+    createdAt    DateTime  @default(now())
+    
+    telemetry    Telemetry?
+    commands     Command[]
+    deviceState  DeviceState?
+    deviceLogs   DeviceLog[]
+
+    @@map("devices")
+}
+
+model Telemetry {
+    id          BigInt   @id @default(autoincrement())
+    deviceId    String   @unique @db.VarChar(20)
+    device      Device   @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+    temperature Decimal  @db.Decimal(5, 2)
+    airflow     Decimal  @db.Decimal(5, 2)
+    timestamp   DateTime @default(now())
+
+    @@index([deviceId, timestamp(sort: Desc)])
+    @@map("telemetry")
+}
+
+model Command {
+    id          BigInt        @id @default(autoincrement())
+    deviceId    String        @unique @db.VarChar(20)
+    device      Device        @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+    commandType CommandType
+    payload     Json
+    status      CommandStatus @default(pending)
+    createdAt   DateTime      @default(now())
+    sentAt      DateTime?
+    ackAt       DateTime?
+
+    @@index([deviceId, status])
+    @@map("commands")
+}
+
+model DeviceState {
+    deviceId      String   @id @unique @db.VarChar(20)
+    device        Device   @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+    temperature   Decimal? @db.Decimal(5, 2)
+    airflow       Decimal? @db.Decimal(5, 2)
+    fanMode       FanMode  @default(auto)
+    fanSpeed      Int?
+    trapdoorState String?  @db.VarChar(10)
+    updatedAt     DateTime @default(now()) @updatedAt
+
+    @@map("device_state")
+}
+
+model DeviceLog {
+    id        BigInt     @id @default(autoincrement())
+    deviceId  String     @unique @db.VarChar(20)
+    device    Device     @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+    eventType EventType?
+    payload   Json?
+    createdAt DateTime   @default(now())
+
+    @@index([deviceId, createdAt(sort: Desc)])
+    @@map("device_logs")
+}
