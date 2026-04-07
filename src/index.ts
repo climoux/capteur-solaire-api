@@ -6,18 +6,17 @@ import websocket from '@fastify/websocket';
 import crypto from 'crypto';
 import 'dotenv/config';
 
-import { devices, type PayloadType } from './db/deviceStore.ts';
 import { registerWS, broadcast } from './utils/websocket.ts';
 import { initMQTT } from './utils/mqtt.ts';
 import { PORT } from './constants.ts';
 
+import { getDevice, deleteDevice, type PayloadType, insertDevice } from './services/device.services.ts';
+
 const fastify = Fastify({ logger: process.env.NODE_ENV === 'production' ? false : true })
 
 // Config
-await fastify.register(fastifyExpress)
+await fastify.register(fastifyExpress);
 await fastify.register(websocket);
-// Rendre accessible aux modules
-fastify.decorate('devices', devices)
 // WebSocket
 registerWS(fastify);
 // MQTT
@@ -49,12 +48,7 @@ fastify.post('/devices', async (req, res) => {
     const deviceId = Math.random().toString(36).substring(2, 13); // ID de 11 caractères
     const deviceSecret = crypto.randomBytes(32).toString('hex'); // Token de 32 caractères hexadécimaux (64 caractères)
 
-    devices.set(deviceId, {
-        deviceId,
-        token: deviceSecret,
-        lastSeen: null,
-        state: {} as PayloadType
-    });
+    insertDevice(deviceId, deviceSecret);
 
     return {
         deviceId,
@@ -68,9 +62,9 @@ fastify.get('/devices/:id', async (req, res) => {
     // Authentification du capteur
     const token = req.headers['authorization']?.split(' ')[1]
     if(!token) return res.status(401).send({ error: 'Missing authorization token' })
-
-    const device = devices.get(id)
-    if(!device || device.token !== token) return res.status(401).send({ error: 'Unauthorized' })
+    
+    const device = await getDevice(id);
+    if(!device || device.deviceToken !== token) return res.status(401).send({ error: 'Unauthorized' })
 
     return {
         deviceId: id,
@@ -82,7 +76,7 @@ fastify.get('/devices/:id', async (req, res) => {
 // -- Supprimer un capteur de la base de données
 fastify.delete('/devices/:id', async (req, res) => {
     const { id } = req.params as { id: string };
-    devices.delete(id);
+    await deleteDevice(id);
     return { status: 'deleted' };
 });
 
@@ -93,7 +87,7 @@ fastify.post('/devices/:id/telemetry', async (req, res) => {
     const token = req.headers['authorization']?.split(' ')[1];
     if(!token) return res.status(401).send({ error: 'Missing authorization token' });
 
-    const device = devices.get(id);
+    const device = await getDevice(id);
     if(!device || device.token !== token) return res.status(401).send({ error: 'Unauthorized' });
 
     const payload = req.body as PayloadType;
