@@ -1,5 +1,6 @@
 import mqtt from 'mqtt';
-import { devices } from '../db/deviceStore.ts';
+
+import { getDevice, updateDevice } from '../services/device.services.ts';
 
 type BroadcastFunction = (deviceId: string, data: { event: string; data: any }) => void;
 let broadcast: BroadcastFunction;
@@ -19,7 +20,7 @@ export const initMQTT = (setBroadcast: BroadcastFunction) => {
         client.subscribe('devices/+/status');
     });
 
-  client.on('message', (topic, message) => {
+  client.on('message', async (topic, message) => {
         const payload = JSON.parse(message.toString());
 
         const match = topic.match(/^devices\/(.+)\/(telemetry|status)$/);
@@ -28,11 +29,20 @@ export const initMQTT = (setBroadcast: BroadcastFunction) => {
         const deviceId = match[1] ?? '';
         const type = match[2] ?? '';
 
-        const device = devices.get(deviceId);
+        const device = await getDevice(deviceId);
         if (!device) return;
 
+        await updateDevice(deviceId, {
+            lastSeen: new Date(),
+            deviceState: {
+                update: {
+                    ...payload,
+                }
+            }
+        });
+
         device.lastSeen = Date.now();
-        device.state = { ...device.state, ...payload };
+        device.deviceState = { ...device.deviceState, ...payload };
 
         console.log(`${type} reçu`, deviceId, payload);
 
