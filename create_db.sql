@@ -11,11 +11,12 @@ CREATE TABLE devices (
 );
 
 CREATE TABLE telemetry (
-    id BIGSERIAL PRIMARY KEY UNIQUE,
+    id BIGSERIAL UNIQUE,
     device_id VARCHAR(50) UNIQUE REFERENCES devices(device_id) ON DELETE CASCADE,
-    temperature NUMERIC(5,2) NOT NULL,        -- en °C
-    airflow NUMERIC(5,2) NOT NULL,            -- flux d'air %
-    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    temperature JSONB NOT NULL,     -- { "in": 0, "out": 0, "target": 0 }
+    airflow NUMERIC(5,2) NOT NULL,  -- flux d'air %
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (device_id, timestamp)
 );
 -- Index pour requêtes historiques rapides
 CREATE INDEX idx_telemetry_device_time ON telemetry(device_id, timestamp DESC);
