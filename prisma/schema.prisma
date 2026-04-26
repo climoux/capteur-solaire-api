@@ -34,67 +34,82 @@ enum CommandStatus {
 
 // Models
 model Device {
-    deviceId     String    @id @unique @db.VarChar(20)
-    deviceSecret String    @unique @db.VarChar(32)
-    lastSeen     DateTime?
-    createdAt    DateTime  @default(now())
+    device_id     String          @id @unique @db.VarChar(20)
+    device_secret String?         @unique
+    last_seen     DateTime?
+    created_at    DateTime        @default(now())
     
     telemetry    Telemetry?
     commands     Command[]
     deviceState  DeviceState?
     deviceLogs   DeviceLog[]
+    pairingCodes DevicePairing[]
 
     @@map("devices")
 }
 
+model DevicePairing {
+    id         Int      @id @default(autoincrement())
+    device_id  String   @db.VarChar(20)
+    code       String   @unique @db.VarChar(4)
+    expires_at DateTime
+    used       Boolean  @default(false)
+    created_at DateTime @default(now())
+
+    device     Device   @relation(fields: [device_id], references: [device_id])
+
+    @@index([code])
+    @@map("device_pairing")
+}
+
 model Telemetry {
-    id          BigInt   @id @default(autoincrement())
-    deviceId    String   @unique @db.VarChar(20)
-    device      Device   @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
+    device_id   String   @unique @db.VarChar(20)
+    device      Device   @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
     temperature Json?
     airflow     Decimal  @db.Decimal(5, 2)
     timestamp   DateTime @default(now())
 
-    @@index([deviceId, timestamp(sort: Desc)])
+    @@id([device_id, timestamp])
+    @@index([device_id, timestamp(sort: Desc)])
     @@map("telemetry")
 }
 
 model Command {
-    id          BigInt        @id @default(autoincrement())
-    deviceId    String        @unique @db.VarChar(20)
-    device      Device        @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
-    commandType CommandType
-    payload     Json
-    status      CommandStatus @default(pending)
-    createdAt   DateTime      @default(now())
-    sentAt      DateTime?
-    ackAt       DateTime?
+    id           Int           @id @default(autoincrement())
+    device_id    String        @unique @db.VarChar(20)
+    device       Device        @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
+    command_type CommandType
+    payload      Json
+    status       CommandStatus @default(pending)
+    created_at   DateTime      @default(now())
+    sent_at      DateTime?
+    ack_at       DateTime?
 
-    @@index([deviceId, status])
+    @@index([device_id, status])
     @@map("commands")
 }
 
 model DeviceState {
-    deviceId      String   @id @unique @db.VarChar(20)
-    device        Device   @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
-    temperature   Json?    
-    airflow       Decimal? @db.Decimal(5, 2)
-    fanMode       FanMode  @default(auto)
-    fanSpeed      Int?
-    trapdoorState String?  @db.VarChar(10)
-    updatedAt     DateTime @default(now()) @updatedAt
+    device_id      String   @id @unique @db.VarChar(20)
+    device         Device   @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
+    temperature    Json?    
+    airflow        Float?
+    fan_mode       FanMode  @default(auto)
+    fan_speed      Int?
+    trapdoor_state String?  @db.VarChar(10)
+    updated_at     DateTime @default(now()) @updatedAt
 
     @@map("device_state")
 }
 
 model DeviceLog {
-    id        BigInt     @id @default(autoincrement())
-    deviceId  String     @unique @db.VarChar(20)
-    device    Device     @relation(fields: [deviceId], references: [deviceId], onDelete: Cascade)
-    eventType EventType?
-    payload   Json?
-    createdAt DateTime   @default(now())
+    id         Int        @id @default(autoincrement())
+    device_id  String     @unique @db.VarChar(20)
+    device     Device     @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
+    event_type EventType?
+    payload    Json?
+    created_at DateTime   @default(now())
 
-    @@index([deviceId, createdAt(sort: Desc)])
+    @@index([device_id, created_at(sort: Desc)])
     @@map("device_logs")
 }

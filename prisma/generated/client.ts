@@ -47,6 +47,11 @@ export { Prisma }
  */
 export type Device = Prisma.DeviceModel
 /**
+ * Model DevicePairing
+ * 
+ */
+export type DevicePairing = Prisma.DevicePairingModel
+/**
  * Model Telemetry
  * 
  */

@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Device: 'Device',
+  DevicePairing: 'DevicePairing',
   Telemetry: 'Telemetry',
   Command: 'Command',
   DeviceState: 'DeviceState',
@@ -75,18 +76,29 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 
 export const DeviceScalarFieldEnum = {
-  deviceId: 'deviceId',
-  deviceSecret: 'deviceSecret',
-  lastSeen: 'lastSeen',
-  createdAt: 'createdAt'
+  device_id: 'device_id',
+  device_secret: 'device_secret',
+  last_seen: 'last_seen',
+  created_at: 'created_at'
 } as const
 
 export type DeviceScalarFieldEnum = (typeof DeviceScalarFieldEnum)[keyof typeof DeviceScalarFieldEnum]
 
 
-export const TelemetryScalarFieldEnum = {
+export const DevicePairingScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
+  device_id: 'device_id',
+  code: 'code',
+  expires_at: 'expires_at',
+  used: 'used',
+  created_at: 'created_at'
+} as const
+
+export type DevicePairingScalarFieldEnum = (typeof DevicePairingScalarFieldEnum)[keyof typeof DevicePairingScalarFieldEnum]
+
+
+export const TelemetryScalarFieldEnum = {
+  device_id: 'device_id',
   temperature: 'temperature',
   airflow: 'airflow',
   timestamp: 'timestamp'
@@ -97,26 +109,26 @@ export type TelemetryScalarFieldEnum = (typeof TelemetryScalarFieldEnum)[keyof t
 
 export const CommandScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
-  commandType: 'commandType',
+  device_id: 'device_id',
+  command_type: 'command_type',
   payload: 'payload',
   status: 'status',
-  createdAt: 'createdAt',
-  sentAt: 'sentAt',
-  ackAt: 'ackAt'
+  created_at: 'created_at',
+  sent_at: 'sent_at',
+  ack_at: 'ack_at'
 } as const
 
 export type CommandScalarFieldEnum = (typeof CommandScalarFieldEnum)[keyof typeof CommandScalarFieldEnum]
 
 
 export const DeviceStateScalarFieldEnum = {
-  deviceId: 'deviceId',
+  device_id: 'device_id',
   temperature: 'temperature',
   airflow: 'airflow',
-  fanMode: 'fanMode',
-  fanSpeed: 'fanSpeed',
-  trapdoorState: 'trapdoorState',
-  updatedAt: 'updatedAt'
+  fan_mode: 'fan_mode',
+  fan_speed: 'fan_speed',
+  trapdoor_state: 'trapdoor_state',
+  updated_at: 'updated_at'
 } as const
 
 export type DeviceStateScalarFieldEnum = (typeof DeviceStateScalarFieldEnum)[keyof typeof DeviceStateScalarFieldEnum]
@@ -124,10 +136,10 @@ export type DeviceStateScalarFieldEnum = (typeof DeviceStateScalarFieldEnum)[key
 
 export const DeviceLogScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
-  eventType: 'eventType',
+  device_id: 'device_id',
+  event_type: 'event_type',
   payload: 'payload',
-  createdAt: 'createdAt'
+  created_at: 'created_at'
 } as const
 
 export type DeviceLogScalarFieldEnum = (typeof DeviceLogScalarFieldEnum)[keyof typeof DeviceLogScalarFieldEnum]
@@ -141,19 +153,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

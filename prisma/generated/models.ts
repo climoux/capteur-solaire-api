@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Device.ts'
+export type * from './models/DevicePairing.ts'
 export type * from './models/Telemetry.ts'
 export type * from './models/Command.ts'
 export type * from './models/DeviceState.ts'

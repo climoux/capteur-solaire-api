@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.6.0
- * Query Engine version: 75cbdc1eb7150937890ad5465d861175c6624711
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.6.0",
-  engine: "75cbdc1eb7150937890ad5465d861175c6624711"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 /**
@@ -385,6 +385,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Device: 'Device',
+  DevicePairing: 'DevicePairing',
   Telemetry: 'Telemetry',
   Command: 'Command',
   DeviceState: 'DeviceState',
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "device" | "telemetry" | "command" | "deviceState" | "deviceLog"
+    modelProps: "device" | "devicePairing" | "telemetry" | "command" | "deviceState" | "deviceLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -479,6 +480,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.DeviceCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.DeviceCountAggregateOutputType> | number
+        }
+      }
+    }
+    DevicePairing: {
+      payload: Prisma.$DevicePairingPayload<ExtArgs>
+      fields: Prisma.DevicePairingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DevicePairingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DevicePairingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        findFirst: {
+          args: Prisma.DevicePairingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DevicePairingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        findMany: {
+          args: Prisma.DevicePairingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>[]
+        }
+        create: {
+          args: Prisma.DevicePairingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        createMany: {
+          args: Prisma.DevicePairingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DevicePairingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>[]
+        }
+        delete: {
+          args: Prisma.DevicePairingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        update: {
+          args: Prisma.DevicePairingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        deleteMany: {
+          args: Prisma.DevicePairingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DevicePairingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DevicePairingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>[]
+        }
+        upsert: {
+          args: Prisma.DevicePairingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DevicePairingPayload>
+        }
+        aggregate: {
+          args: Prisma.DevicePairingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDevicePairing>
+        }
+        groupBy: {
+          args: Prisma.DevicePairingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DevicePairingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DevicePairingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DevicePairingCountAggregateOutputType> | number
         }
       }
     }
@@ -818,18 +893,29 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 
 export const DeviceScalarFieldEnum = {
-  deviceId: 'deviceId',
-  deviceSecret: 'deviceSecret',
-  lastSeen: 'lastSeen',
-  createdAt: 'createdAt'
+  device_id: 'device_id',
+  device_secret: 'device_secret',
+  last_seen: 'last_seen',
+  created_at: 'created_at'
 } as const
 
 export type DeviceScalarFieldEnum = (typeof DeviceScalarFieldEnum)[keyof typeof DeviceScalarFieldEnum]
 
 
-export const TelemetryScalarFieldEnum = {
+export const DevicePairingScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
+  device_id: 'device_id',
+  code: 'code',
+  expires_at: 'expires_at',
+  used: 'used',
+  created_at: 'created_at'
+} as const
+
+export type DevicePairingScalarFieldEnum = (typeof DevicePairingScalarFieldEnum)[keyof typeof DevicePairingScalarFieldEnum]
+
+
+export const TelemetryScalarFieldEnum = {
+  device_id: 'device_id',
   temperature: 'temperature',
   airflow: 'airflow',
   timestamp: 'timestamp'
@@ -840,26 +926,26 @@ export type TelemetryScalarFieldEnum = (typeof TelemetryScalarFieldEnum)[keyof t
 
 export const CommandScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
-  commandType: 'commandType',
+  device_id: 'device_id',
+  command_type: 'command_type',
   payload: 'payload',
   status: 'status',
-  createdAt: 'createdAt',
-  sentAt: 'sentAt',
-  ackAt: 'ackAt'
+  created_at: 'created_at',
+  sent_at: 'sent_at',
+  ack_at: 'ack_at'
 } as const
 
 export type CommandScalarFieldEnum = (typeof CommandScalarFieldEnum)[keyof typeof CommandScalarFieldEnum]
 
 
 export const DeviceStateScalarFieldEnum = {
-  deviceId: 'deviceId',
+  device_id: 'device_id',
   temperature: 'temperature',
   airflow: 'airflow',
-  fanMode: 'fanMode',
-  fanSpeed: 'fanSpeed',
-  trapdoorState: 'trapdoorState',
-  updatedAt: 'updatedAt'
+  fan_mode: 'fan_mode',
+  fan_speed: 'fan_speed',
+  trapdoor_state: 'trapdoor_state',
+  updated_at: 'updated_at'
 } as const
 
 export type DeviceStateScalarFieldEnum = (typeof DeviceStateScalarFieldEnum)[keyof typeof DeviceStateScalarFieldEnum]
@@ -867,10 +953,10 @@ export type DeviceStateScalarFieldEnum = (typeof DeviceStateScalarFieldEnum)[key
 
 export const DeviceLogScalarFieldEnum = {
   id: 'id',
-  deviceId: 'deviceId',
-  eventType: 'eventType',
+  device_id: 'device_id',
+  event_type: 'event_type',
   payload: 'payload',
-  createdAt: 'createdAt'
+  created_at: 'created_at'
 } as const
 
 export type DeviceLogScalarFieldEnum = (typeof DeviceLogScalarFieldEnum)[keyof typeof DeviceLogScalarFieldEnum]
@@ -884,19 +970,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -959,16 +1045,37 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'BigInt'
+ * Reference to a field of type 'Int'
  */
-export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'BigInt[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1001,20 +1108,6 @@ export type ListEnumCommandTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
  * Reference to a field of type 'CommandStatus'
  */
 export type EnumCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandStatus'>
@@ -1039,20 +1132,6 @@ export type EnumFanModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
  * Reference to a field of type 'FanMode[]'
  */
 export type ListEnumFanModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FanMode[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1176,9 +1255,25 @@ export type PrismaClientOptions = ({
    * ```
    */
   comments?: runtime.SqlCommenterPlugin[]
+  /**
+   * Optional maximum size for the query plan cache. If not provided, a default size will be used.
+   * A value of `0` can be used to disable the cache entirely. A higher cache size can improve
+   * performance for applications that execute a large number of unique queries, while a smaller
+   * cache size can reduce memory usage.
+   * 
+   * @example
+   * ```
+   * const prisma = new PrismaClient({
+   *   adapter,
+   *   queryPlanCacheMaxSize: 100,
+   * })
+   * ```
+   */
+  queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
   device?: Prisma.DeviceOmit
+  devicePairing?: Prisma.DevicePairingOmit
   telemetry?: Prisma.TelemetryOmit
   command?: Prisma.CommandOmit
   deviceState?: Prisma.DeviceStateOmit

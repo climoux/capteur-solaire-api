@@ -23,6 +23,11 @@ export * from './enums.ts';
  */
 export type Device = Prisma.DeviceModel
 /**
+ * Model DevicePairing
+ * 
+ */
+export type DevicePairing = Prisma.DevicePairingModel
+/**
  * Model Telemetry
  * 
  */

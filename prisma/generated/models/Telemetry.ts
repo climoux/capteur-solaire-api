@@ -27,36 +27,27 @@ export type AggregateTelemetry = {
 }
 
 export type TelemetryAvgAggregateOutputType = {
-  id: number | null
-  temperature: runtime.Decimal | null
   airflow: runtime.Decimal | null
 }
 
 export type TelemetrySumAggregateOutputType = {
-  id: bigint | null
-  temperature: runtime.Decimal | null
   airflow: runtime.Decimal | null
 }
 
 export type TelemetryMinAggregateOutputType = {
-  id: bigint | null
-  deviceId: string | null
-  temperature: runtime.Decimal | null
+  device_id: string | null
   airflow: runtime.Decimal | null
   timestamp: Date | null
 }
 
 export type TelemetryMaxAggregateOutputType = {
-  id: bigint | null
-  deviceId: string | null
-  temperature: runtime.Decimal | null
+  device_id: string | null
   airflow: runtime.Decimal | null
   timestamp: Date | null
 }
 
 export type TelemetryCountAggregateOutputType = {
-  id: number
-  deviceId: number
+  device_id: number
   temperature: number
   airflow: number
   timestamp: number
@@ -65,36 +56,27 @@ export type TelemetryCountAggregateOutputType = {
 
 
 export type TelemetryAvgAggregateInputType = {
-  id?: true
-  temperature?: true
   airflow?: true
 }
 
 export type TelemetrySumAggregateInputType = {
-  id?: true
-  temperature?: true
   airflow?: true
 }
 
 export type TelemetryMinAggregateInputType = {
-  id?: true
-  deviceId?: true
-  temperature?: true
+  device_id?: true
   airflow?: true
   timestamp?: true
 }
 
 export type TelemetryMaxAggregateInputType = {
-  id?: true
-  deviceId?: true
-  temperature?: true
+  device_id?: true
   airflow?: true
   timestamp?: true
 }
 
 export type TelemetryCountAggregateInputType = {
-  id?: true
-  deviceId?: true
+  device_id?: true
   temperature?: true
   airflow?: true
   timestamp?: true
@@ -188,9 +170,8 @@ export type TelemetryGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 export type TelemetryGroupByOutputType = {
-  id: bigint
-  deviceId: string
-  temperature: runtime.Decimal
+  device_id: string
+  temperature: runtime.JsonValue | null
   airflow: runtime.Decimal
   timestamp: Date
   _count: TelemetryCountAggregateOutputType | null
@@ -219,39 +200,36 @@ export type TelemetryWhereInput = {
   AND?: Prisma.TelemetryWhereInput | Prisma.TelemetryWhereInput[]
   OR?: Prisma.TelemetryWhereInput[]
   NOT?: Prisma.TelemetryWhereInput | Prisma.TelemetryWhereInput[]
-  id?: Prisma.BigIntFilter<"Telemetry"> | bigint | number
-  deviceId?: Prisma.StringFilter<"Telemetry"> | string
-  temperature?: Prisma.DecimalFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id?: Prisma.StringFilter<"Telemetry"> | string
+  temperature?: Prisma.JsonNullableFilter<"Telemetry">
   airflow?: Prisma.DecimalFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFilter<"Telemetry"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
 }
 
 export type TelemetryOrderByWithRelationInput = {
-  id?: Prisma.SortOrder
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
+  temperature?: Prisma.SortOrderInput | Prisma.SortOrder
   airflow?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   device?: Prisma.DeviceOrderByWithRelationInput
 }
 
 export type TelemetryWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
-  deviceId?: string
+  device_id?: string
+  device_id_timestamp?: Prisma.TelemetryDevice_idTimestampCompoundUniqueInput
   AND?: Prisma.TelemetryWhereInput | Prisma.TelemetryWhereInput[]
   OR?: Prisma.TelemetryWhereInput[]
   NOT?: Prisma.TelemetryWhereInput | Prisma.TelemetryWhereInput[]
-  temperature?: Prisma.DecimalFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.JsonNullableFilter<"Telemetry">
   airflow?: Prisma.DecimalFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFilter<"Telemetry"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
-}, "id" | "deviceId">
+}, "device_id_timestamp" | "device_id">
 
 export type TelemetryOrderByWithAggregationInput = {
-  id?: Prisma.SortOrder
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
+  temperature?: Prisma.SortOrderInput | Prisma.SortOrder
   airflow?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
   _count?: Prisma.TelemetryCountOrderByAggregateInput
@@ -265,64 +243,56 @@ export type TelemetryScalarWhereWithAggregatesInput = {
   AND?: Prisma.TelemetryScalarWhereWithAggregatesInput | Prisma.TelemetryScalarWhereWithAggregatesInput[]
   OR?: Prisma.TelemetryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.TelemetryScalarWhereWithAggregatesInput | Prisma.TelemetryScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"Telemetry"> | bigint | number
-  deviceId?: Prisma.StringWithAggregatesFilter<"Telemetry"> | string
-  temperature?: Prisma.DecimalWithAggregatesFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id?: Prisma.StringWithAggregatesFilter<"Telemetry"> | string
+  temperature?: Prisma.JsonNullableWithAggregatesFilter<"Telemetry">
   airflow?: Prisma.DecimalWithAggregatesFilter<"Telemetry"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeWithAggregatesFilter<"Telemetry"> | Date | string
 }
 
 export type TelemetryCreateInput = {
-  id?: bigint | number
-  temperature: runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
   device: Prisma.DeviceCreateNestedOneWithoutTelemetryInput
 }
 
 export type TelemetryUncheckedCreateInput = {
-  id?: bigint | number
-  deviceId: string
-  temperature: runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id: string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
 }
 
 export type TelemetryUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   device?: Prisma.DeviceUpdateOneRequiredWithoutTelemetryNestedInput
 }
 
 export type TelemetryUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id?: Prisma.StringFieldUpdateOperationsInput | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TelemetryCreateManyInput = {
-  id?: bigint | number
-  deviceId: string
-  temperature: runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id: string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
 }
 
 export type TelemetryUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TelemetryUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  device_id?: Prisma.StringFieldUpdateOperationsInput | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,39 +302,35 @@ export type TelemetryNullableScalarRelationFilter = {
   isNot?: Prisma.TelemetryWhereInput | null
 }
 
+export type TelemetryDevice_idTimestampCompoundUniqueInput = {
+  device_id: string
+  timestamp: Date | string
+}
+
 export type TelemetryCountOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  deviceId?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
 export type TelemetryAvgOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
 }
 
 export type TelemetryMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
 export type TelemetryMinOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
   timestamp?: Prisma.SortOrder
 }
 
 export type TelemetrySumOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
 }
 
@@ -400,14 +366,6 @@ export type TelemetryUncheckedUpdateOneWithoutDeviceNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TelemetryUpdateToOneWithWhereWithoutDeviceInput, Prisma.TelemetryUpdateWithoutDeviceInput>, Prisma.TelemetryUncheckedUpdateWithoutDeviceInput>
 }
 
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
-}
-
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -417,15 +375,13 @@ export type DecimalFieldUpdateOperationsInput = {
 }
 
 export type TelemetryCreateWithoutDeviceInput = {
-  id?: bigint | number
-  temperature: runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
 }
 
 export type TelemetryUncheckedCreateWithoutDeviceInput = {
-  id?: bigint | number
-  temperature: runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow: runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Date | string
 }
@@ -447,15 +403,13 @@ export type TelemetryUpdateToOneWithWhereWithoutDeviceInput = {
 }
 
 export type TelemetryUpdateWithoutDeviceInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type TelemetryUncheckedUpdateWithoutDeviceInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  temperature?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   timestamp?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -463,8 +417,7 @@ export type TelemetryUncheckedUpdateWithoutDeviceInput = {
 
 
 export type TelemetrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
   timestamp?: boolean
@@ -472,8 +425,7 @@ export type TelemetrySelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 }, ExtArgs["result"]["telemetry"]>
 
 export type TelemetrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
   timestamp?: boolean
@@ -481,8 +433,7 @@ export type TelemetrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 }, ExtArgs["result"]["telemetry"]>
 
 export type TelemetrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
   timestamp?: boolean
@@ -490,14 +441,13 @@ export type TelemetrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 }, ExtArgs["result"]["telemetry"]>
 
 export type TelemetrySelectScalar = {
-  id?: boolean
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
   timestamp?: boolean
 }
 
-export type TelemetryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deviceId" | "temperature" | "airflow" | "timestamp", ExtArgs["result"]["telemetry"]>
+export type TelemetryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"device_id" | "temperature" | "airflow" | "timestamp", ExtArgs["result"]["telemetry"]>
 export type TelemetryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   device?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
 }
@@ -514,9 +464,8 @@ export type $TelemetryPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     device: Prisma.$DevicePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    deviceId: string
-    temperature: runtime.Decimal
+    device_id: string
+    temperature: runtime.JsonValue | null
     airflow: runtime.Decimal
     timestamp: Date
   }, ExtArgs["result"]["telemetry"]>
@@ -602,8 +551,8 @@ export interface TelemetryDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * // Get first 10 Telemetries
    * const telemetries = await prisma.telemetry.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const telemetryWithIdOnly = await prisma.telemetry.findMany({ select: { id: true } })
+   * // Only select the `device_id`
+   * const telemetryWithDevice_idOnly = await prisma.telemetry.findMany({ select: { device_id: true } })
    * 
    */
   findMany<T extends TelemetryFindManyArgs>(args?: Prisma.SelectSubset<T, TelemetryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TelemetryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -647,9 +596,9 @@ export interface TelemetryDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   ]
    * })
    * 
-   * // Create many Telemetries and only return the `id`
-   * const telemetryWithIdOnly = await prisma.telemetry.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Telemetries and only return the `device_id`
+   * const telemetryWithDevice_idOnly = await prisma.telemetry.createManyAndReturn({
+   *   select: { device_id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -738,9 +687,9 @@ export interface TelemetryDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   ]
    * })
    * 
-   * // Update zero or more Telemetries and only return the `id`
-   * const telemetryWithIdOnly = await prisma.telemetry.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Telemetries and only return the `device_id`
+   * const telemetryWithDevice_idOnly = await prisma.telemetry.updateManyAndReturn({
+   *   select: { device_id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -943,9 +892,8 @@ export interface Prisma__TelemetryClient<T, Null = never, ExtArgs extends runtim
  * Fields of the Telemetry model
  */
 export interface TelemetryFieldRefs {
-  readonly id: Prisma.FieldRef<"Telemetry", 'BigInt'>
-  readonly deviceId: Prisma.FieldRef<"Telemetry", 'String'>
-  readonly temperature: Prisma.FieldRef<"Telemetry", 'Decimal'>
+  readonly device_id: Prisma.FieldRef<"Telemetry", 'String'>
+  readonly temperature: Prisma.FieldRef<"Telemetry", 'Json'>
   readonly airflow: Prisma.FieldRef<"Telemetry", 'Decimal'>
   readonly timestamp: Prisma.FieldRef<"Telemetry", 'DateTime'>
 }

@@ -3,16 +3,24 @@ import fastifyExpress from '@fastify/express';
 import cors from '@fastify/cors';
 import type { FastifyCorsOptions } from '@fastify/cors';
 import websocket from '@fastify/websocket';
+import jwt from '@fastify/jwt';
 import crypto from 'crypto';
 import 'dotenv/config';
 
 import { registerWS, broadcast } from './utils/websocket.ts';
 import { initMQTT } from './utils/mqtt.ts';
+import { generateCode } from './utils/generateCode.ts';
+import { hashSecurity, verifyHash } from './utils/hash.ts';
+import generateToken from './utils/generateToken.ts';
+
 import { PORT } from './constants.ts';
 
-import { getDevice, deleteDevice, type PayloadType, insertDevice } from './services/device.services.ts';
+import { getDevice, deleteDevice, type PayloadType, insertDevice, updateDevice } from './services/device.services.ts';
+import { upsertTelemetry } from './services/telemetry.services.ts';
 
-const fastify = Fastify({ logger: process.env.NODE_ENV === 'production' ? false : true })
+import { prisma } from './db/prisma.ts';
+
+const fastify = Fastify({ logger: process.env.NODE_ENV === 'production' ? false : true });
 
 // Config
 await fastify.register(fastifyExpress);
@@ -38,6 +46,18 @@ const corsOptions: FastifyCorsOptions = {
 }
 await fastify.register(cors, corsOptions);
 
+// -- JWT
+fastify.register(jwt, { secret: process.env.JWT_SECRET || 'super-secret-key' });
+
+fastify.decorate('authenticate', async (req: any, res: any) => {
+    try {
+        await req.jwtVerify()
+    }catch (err){
+        res.status(401).send({ error: 'Unauthorized' })
+    }
+});
+
+
 // Endpoints
 fastify.get('/', async (req, res) => {
     return {};
@@ -46,31 +66,83 @@ fastify.get('/', async (req, res) => {
 // -- Enregistrer un nouveau capteur
 fastify.post('/devices', async (req, res) => {
     const deviceId = Math.random().toString(36).substring(2, 13); // ID de 11 caractères
-    const deviceSecret = crypto.randomBytes(32).toString('hex'); // Token de 32 caractères hexadécimaux (64 caractères)
-
-    insertDevice(deviceId, deviceSecret);
+    const pairingCode = generateCode(4); // Code à 4 caractères (majuscules et chiffres)
+    
+    await insertDevice(deviceId, pairingCode);
 
     return {
         deviceId,
-        deviceSecret
+        pairingCode
     };
+});
+
+// -- Ajouter le renouvellement du code d'appareillage (pairing code) pour se connecter à un capteur
+// Cet endpoint est uniquement appelé par le capteur lui même pour créer un pairing code temporaire
+fastify.post('/devices/:id/pairing-code', async (req, res) => {
+    const { id } = req.params as { id: string };
+
+    await updateDevice(id, {
+        pairing_code: generateCode(4), // Code à 4 caractères (majuscules et chiffres)
+        pairing_expires_at: new Date(Date.now() + 15 * 60 * 1000) // Expire dans 15 minutes
+    })
+
+    return { status: 'ok' };
+});
+
+// -- Se connecter a un capteur via le pairing code
+// Cet endpoint est uniquement appelé par l'application
+fastify.post('/devices/pair', async (req, res) => {
+    const { pairingCode } = req.body as { pairingCode: string; };
+    if (!pairingCode) return res.status(400).send({ error: 'pairingCode is required' });
+
+    const codeEntry = await prisma.devicePairing.findUnique({
+        where: { code: pairingCode },
+        include: { device: true },
+    });
+    if (!codeEntry) return res.status(400).send({ code: 400, error: 'Invalid pairing code', errorCode: "INVALID" });
+    if (codeEntry.expires_at < new Date()) return res.status(400).send({ code: 400, error: 'Pairing code expired', errorCode: "EXPIRED" });
+    if (codeEntry.used) return res.status(401).send({ code: 401, error: 'Pairing code already used', errorCode: "USED" });
+
+    await prisma.devicePairing.update({
+        where: { id: codeEntry.id },
+        data: { used: true },
+    });
+
+    // Generate device secret (auth token)
+    const deviceSecret = crypto.randomBytes(32).toString('hex'); // Token de 32 caractères hexadécimaux (64 caractères)
+    const hashSecret = await hashSecurity(deviceSecret);
+
+    await prisma.$transaction([
+        prisma.device.update({
+            where: { device_id: codeEntry.device_id },
+            data: { device_secret: hashSecret }
+        }),
+        prisma.devicePairing.update({
+            where: { id: codeEntry.id },
+            data: { used: true },
+        })
+    ]);
+
+    return { status: 'paired', deviceId: codeEntry.device_id, secret: deviceSecret };
 });
 
 // -- Avoir les données d'un capteur spécifique (températures, flux d'air, etc.)
 fastify.get('/devices/:id', async (req, res) => {
     const { id } = req.params as { id: string };
     // Authentification du capteur
-    const token = req.headers['authorization']?.split(' ')[1]
-    if(!token) return res.status(401).send({ error: 'Missing authorization token' })
+    const header = req.headers.authorization;
+    const token = header?.startsWith("Bearer ") ? header.split(' ')[1] : null;
+    if(!token) return res.status(401).send({ error: 'Missing authorization token' });
     
     const device = await getDevice(id);
-    if(!device || device.deviceToken !== token) return res.status(401).send({ error: 'Unauthorized' })
+    const verify = device?.device_secret ? await verifyHash(device.device_secret, token) : false;
+    if(!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
 
     return {
         deviceId: id,
-        lastSeen: device.lastSeen,
-        state: device.state
-    }
+        lastSeen: device.last_seen,
+        state: device.deviceState
+    };
 });
 
 // -- Supprimer un capteur de la base de données
@@ -84,21 +156,33 @@ fastify.delete('/devices/:id', async (req, res) => {
 fastify.post('/devices/:id/telemetry', async (req, res) => {
     const { id } = req.params as { id: string };
     // Authentification du capteur
-    const token = req.headers['authorization']?.split(' ')[1];
+    const header = req.headers.authorization;
+    const token = header?.startsWith("Bearer ") ? header.split(' ')[1] : null;
     if(!token) return res.status(401).send({ error: 'Missing authorization token' });
 
     const device = await getDevice(id);
-    if(!device || device.token !== token) return res.status(401).send({ error: 'Unauthorized' });
+    const verify = device?.device_secret ? await verifyHash(device.device_secret, token) : false;
+    if(!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
 
     const payload = req.body as PayloadType;
-    device.state = { ...device.state, ...payload };
-    device.lastSeen = Date.now();
+    if(payload.temperature && payload.airflow){
+        await updateDevice(id, {
+            deviceState: {
+                update: {
+                    ...device.deviceState,
+                    ...payload
+                }
+            },
+            last_seen: new Date()
+        });
+        await upsertTelemetry(id, payload.temperature, payload.airflow);
 
-    // Publier MQTT pour que backend et WS reçoivent
-    mqttClient.publish(`devices/${id}/telemetry`, JSON.stringify(payload));
+        // Publier MQTT pour que backend et WS reçoivent
+        mqttClient.publish(`devices/${id}/telemetry`, JSON.stringify(payload));
 
-    // Push WebSocket direct
-    broadcast(id, { event: 'telemetry', data: payload });
+        // Push WebSocket direct
+        broadcast(id, { event: 'telemetry', data: payload });
+    }
 
     return { status: 'ok' };
 });

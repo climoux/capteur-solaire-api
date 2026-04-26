@@ -6,44 +6,48 @@ export type PayloadType = {
         out: number;
         target: number;
     };
-    airFlow?: number;
+    airflow?: number;
 };
 
-export const getDevice = async (deviceId: string) => {
-    return prisma.devices.findUnique({
+export const getDevice = async (id: string) => {
+    return prisma.device.findUnique({
         where: {
-            deviceId
+            device_id: id
         },
         include: {
           deviceState: true,
         },
-    })
+    });
 }
 
-export const deleteDevice = async (deviceId: string) => {
-    return prisma.devices.delete({
+export const deleteDevice = async (id: string) => {
+    return prisma.device.delete({
         where: {
-            deviceId
+            device_id: id
         },
-    })
+    });
 }
 
-export const insertDevice = async (deviceId: string, deviceSecret: string) => {
-    return prisma.devices.create({
+export const insertDevice = async (id: string, pairingCode: string) => {
+    const device = await prisma.device.create({
+        data: { device_id: id },
+    });
+    const pairing = await prisma.devicePairing.create({
         data: {
-            deviceId,
-            deviceSecret
-        },
+            device_id: id,
+            code: pairingCode,
+            expires_at: new Date(Date.now() + 5 * 60 * 1000) // Expire dans 5 minutes
+        }
     })
+
+    return { ...device, pairing };
 }
 
-export const updateDevice = async (deviceId: string, ...data: any) => {
-    return prisma.devices.update({
+export const updateDevice = async (id: string, data: any) => {
+    return prisma.device.update({
         where: {
-            deviceId
+            device_id: id
         },
-        data: {
-            ...data
-        },
-    })
+        data
+    });
 }

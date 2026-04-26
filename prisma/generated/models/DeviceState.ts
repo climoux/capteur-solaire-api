@@ -27,89 +27,81 @@ export type AggregateDeviceState = {
 }
 
 export type DeviceStateAvgAggregateOutputType = {
-  temperature: runtime.Decimal | null
   airflow: runtime.Decimal | null
-  fanSpeed: number | null
+  fan_speed: number | null
 }
 
 export type DeviceStateSumAggregateOutputType = {
-  temperature: runtime.Decimal | null
   airflow: runtime.Decimal | null
-  fanSpeed: number | null
+  fan_speed: number | null
 }
 
 export type DeviceStateMinAggregateOutputType = {
-  deviceId: string | null
-  temperature: runtime.Decimal | null
+  device_id: string | null
   airflow: runtime.Decimal | null
-  fanMode: $Enums.FanMode | null
-  fanSpeed: number | null
-  trapdoorState: string | null
-  updatedAt: Date | null
+  fan_mode: $Enums.FanMode | null
+  fan_speed: number | null
+  trapdoor_state: string | null
+  updated_at: Date | null
 }
 
 export type DeviceStateMaxAggregateOutputType = {
-  deviceId: string | null
-  temperature: runtime.Decimal | null
+  device_id: string | null
   airflow: runtime.Decimal | null
-  fanMode: $Enums.FanMode | null
-  fanSpeed: number | null
-  trapdoorState: string | null
-  updatedAt: Date | null
+  fan_mode: $Enums.FanMode | null
+  fan_speed: number | null
+  trapdoor_state: string | null
+  updated_at: Date | null
 }
 
 export type DeviceStateCountAggregateOutputType = {
-  deviceId: number
+  device_id: number
   temperature: number
   airflow: number
-  fanMode: number
-  fanSpeed: number
-  trapdoorState: number
-  updatedAt: number
+  fan_mode: number
+  fan_speed: number
+  trapdoor_state: number
+  updated_at: number
   _all: number
 }
 
 
 export type DeviceStateAvgAggregateInputType = {
-  temperature?: true
   airflow?: true
-  fanSpeed?: true
+  fan_speed?: true
 }
 
 export type DeviceStateSumAggregateInputType = {
-  temperature?: true
   airflow?: true
-  fanSpeed?: true
+  fan_speed?: true
 }
 
 export type DeviceStateMinAggregateInputType = {
-  deviceId?: true
-  temperature?: true
+  device_id?: true
   airflow?: true
-  fanMode?: true
-  fanSpeed?: true
-  trapdoorState?: true
-  updatedAt?: true
+  fan_mode?: true
+  fan_speed?: true
+  trapdoor_state?: true
+  updated_at?: true
 }
 
 export type DeviceStateMaxAggregateInputType = {
-  deviceId?: true
-  temperature?: true
+  device_id?: true
   airflow?: true
-  fanMode?: true
-  fanSpeed?: true
-  trapdoorState?: true
-  updatedAt?: true
+  fan_mode?: true
+  fan_speed?: true
+  trapdoor_state?: true
+  updated_at?: true
 }
 
 export type DeviceStateCountAggregateInputType = {
-  deviceId?: true
+  device_id?: true
   temperature?: true
   airflow?: true
-  fanMode?: true
-  fanSpeed?: true
-  trapdoorState?: true
-  updatedAt?: true
+  fan_mode?: true
+  fan_speed?: true
+  trapdoor_state?: true
+  updated_at?: true
   _all?: true
 }
 
@@ -200,13 +192,13 @@ export type DeviceStateGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 export type DeviceStateGroupByOutputType = {
-  deviceId: string
-  temperature: runtime.Decimal | null
+  device_id: string
+  temperature: runtime.JsonValue | null
   airflow: runtime.Decimal | null
-  fanMode: $Enums.FanMode
-  fanSpeed: number | null
-  trapdoorState: string | null
-  updatedAt: Date
+  fan_mode: $Enums.FanMode
+  fan_speed: number | null
+  trapdoor_state: string | null
+  updated_at: Date
   _count: DeviceStateCountAggregateOutputType | null
   _avg: DeviceStateAvgAggregateOutputType | null
   _sum: DeviceStateSumAggregateOutputType | null
@@ -233,49 +225,49 @@ export type DeviceStateWhereInput = {
   AND?: Prisma.DeviceStateWhereInput | Prisma.DeviceStateWhereInput[]
   OR?: Prisma.DeviceStateWhereInput[]
   NOT?: Prisma.DeviceStateWhereInput | Prisma.DeviceStateWhereInput[]
-  deviceId?: Prisma.StringFilter<"DeviceState"> | string
-  temperature?: Prisma.DecimalNullableFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id?: Prisma.StringFilter<"DeviceState"> | string
+  temperature?: Prisma.JsonNullableFilter<"DeviceState">
   airflow?: Prisma.DecimalNullableFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFilter<"DeviceState"> | $Enums.FanMode
-  fanSpeed?: Prisma.IntNullableFilter<"DeviceState"> | number | null
-  trapdoorState?: Prisma.StringNullableFilter<"DeviceState"> | string | null
-  updatedAt?: Prisma.DateTimeFilter<"DeviceState"> | Date | string
+  fan_mode?: Prisma.EnumFanModeFilter<"DeviceState"> | $Enums.FanMode
+  fan_speed?: Prisma.IntNullableFilter<"DeviceState"> | number | null
+  trapdoor_state?: Prisma.StringNullableFilter<"DeviceState"> | string | null
+  updated_at?: Prisma.DateTimeFilter<"DeviceState"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
 }
 
 export type DeviceStateOrderByWithRelationInput = {
-  deviceId?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   temperature?: Prisma.SortOrderInput | Prisma.SortOrder
   airflow?: Prisma.SortOrderInput | Prisma.SortOrder
-  fanMode?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrderInput | Prisma.SortOrder
-  trapdoorState?: Prisma.SortOrderInput | Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  fan_mode?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrderInput | Prisma.SortOrder
+  trapdoor_state?: Prisma.SortOrderInput | Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   device?: Prisma.DeviceOrderByWithRelationInput
 }
 
 export type DeviceStateWhereUniqueInput = Prisma.AtLeast<{
-  deviceId?: string
+  device_id?: string
   AND?: Prisma.DeviceStateWhereInput | Prisma.DeviceStateWhereInput[]
   OR?: Prisma.DeviceStateWhereInput[]
   NOT?: Prisma.DeviceStateWhereInput | Prisma.DeviceStateWhereInput[]
-  temperature?: Prisma.DecimalNullableFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.JsonNullableFilter<"DeviceState">
   airflow?: Prisma.DecimalNullableFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFilter<"DeviceState"> | $Enums.FanMode
-  fanSpeed?: Prisma.IntNullableFilter<"DeviceState"> | number | null
-  trapdoorState?: Prisma.StringNullableFilter<"DeviceState"> | string | null
-  updatedAt?: Prisma.DateTimeFilter<"DeviceState"> | Date | string
+  fan_mode?: Prisma.EnumFanModeFilter<"DeviceState"> | $Enums.FanMode
+  fan_speed?: Prisma.IntNullableFilter<"DeviceState"> | number | null
+  trapdoor_state?: Prisma.StringNullableFilter<"DeviceState"> | string | null
+  updated_at?: Prisma.DateTimeFilter<"DeviceState"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
-}, "deviceId" | "deviceId">
+}, "device_id" | "device_id">
 
 export type DeviceStateOrderByWithAggregationInput = {
-  deviceId?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   temperature?: Prisma.SortOrderInput | Prisma.SortOrder
   airflow?: Prisma.SortOrderInput | Prisma.SortOrder
-  fanMode?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrderInput | Prisma.SortOrder
-  trapdoorState?: Prisma.SortOrderInput | Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  fan_mode?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrderInput | Prisma.SortOrder
+  trapdoor_state?: Prisma.SortOrderInput | Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
   _count?: Prisma.DeviceStateCountOrderByAggregateInput
   _avg?: Prisma.DeviceStateAvgOrderByAggregateInput
   _max?: Prisma.DeviceStateMaxOrderByAggregateInput
@@ -287,82 +279,82 @@ export type DeviceStateScalarWhereWithAggregatesInput = {
   AND?: Prisma.DeviceStateScalarWhereWithAggregatesInput | Prisma.DeviceStateScalarWhereWithAggregatesInput[]
   OR?: Prisma.DeviceStateScalarWhereWithAggregatesInput[]
   NOT?: Prisma.DeviceStateScalarWhereWithAggregatesInput | Prisma.DeviceStateScalarWhereWithAggregatesInput[]
-  deviceId?: Prisma.StringWithAggregatesFilter<"DeviceState"> | string
-  temperature?: Prisma.DecimalNullableWithAggregatesFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id?: Prisma.StringWithAggregatesFilter<"DeviceState"> | string
+  temperature?: Prisma.JsonNullableWithAggregatesFilter<"DeviceState">
   airflow?: Prisma.DecimalNullableWithAggregatesFilter<"DeviceState"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeWithAggregatesFilter<"DeviceState"> | $Enums.FanMode
-  fanSpeed?: Prisma.IntNullableWithAggregatesFilter<"DeviceState"> | number | null
-  trapdoorState?: Prisma.StringNullableWithAggregatesFilter<"DeviceState"> | string | null
-  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"DeviceState"> | Date | string
+  fan_mode?: Prisma.EnumFanModeWithAggregatesFilter<"DeviceState"> | $Enums.FanMode
+  fan_speed?: Prisma.IntNullableWithAggregatesFilter<"DeviceState"> | number | null
+  trapdoor_state?: Prisma.StringNullableWithAggregatesFilter<"DeviceState"> | string | null
+  updated_at?: Prisma.DateTimeWithAggregatesFilter<"DeviceState"> | Date | string
 }
 
 export type DeviceStateCreateInput = {
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: $Enums.FanMode
-  fanSpeed?: number | null
-  trapdoorState?: string | null
-  updatedAt?: Date | string
+  fan_mode?: $Enums.FanMode
+  fan_speed?: number | null
+  trapdoor_state?: string | null
+  updated_at?: Date | string
   device: Prisma.DeviceCreateNestedOneWithoutDeviceStateInput
 }
 
 export type DeviceStateUncheckedCreateInput = {
-  deviceId: string
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id: string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: $Enums.FanMode
-  fanSpeed?: number | null
-  trapdoorState?: string | null
-  updatedAt?: Date | string
+  fan_mode?: $Enums.FanMode
+  fan_speed?: number | null
+  trapdoor_state?: string | null
+  updated_at?: Date | string
 }
 
 export type DeviceStateUpdateInput = {
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   device?: Prisma.DeviceUpdateOneRequiredWithoutDeviceStateNestedInput
 }
 
 export type DeviceStateUncheckedUpdateInput = {
-  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id?: Prisma.StringFieldUpdateOperationsInput | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceStateCreateManyInput = {
-  deviceId: string
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id: string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: $Enums.FanMode
-  fanSpeed?: number | null
-  trapdoorState?: string | null
-  updatedAt?: Date | string
+  fan_mode?: $Enums.FanMode
+  fan_speed?: number | null
+  trapdoor_state?: string | null
+  updated_at?: Date | string
 }
 
 export type DeviceStateUpdateManyMutationInput = {
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceStateUncheckedUpdateManyInput = {
-  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  device_id?: Prisma.StringFieldUpdateOperationsInput | string
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceStateNullableScalarRelationFilter = {
@@ -371,45 +363,41 @@ export type DeviceStateNullableScalarRelationFilter = {
 }
 
 export type DeviceStateCountOrderByAggregateInput = {
-  deviceId?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
-  fanMode?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrder
-  trapdoorState?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  fan_mode?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrder
+  trapdoor_state?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
 }
 
 export type DeviceStateAvgOrderByAggregateInput = {
-  temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrder
 }
 
 export type DeviceStateMaxOrderByAggregateInput = {
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
-  fanMode?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrder
-  trapdoorState?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  fan_mode?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrder
+  trapdoor_state?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
 }
 
 export type DeviceStateMinOrderByAggregateInput = {
-  deviceId?: Prisma.SortOrder
-  temperature?: Prisma.SortOrder
+  device_id?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
-  fanMode?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrder
-  trapdoorState?: Prisma.SortOrder
-  updatedAt?: Prisma.SortOrder
+  fan_mode?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrder
+  trapdoor_state?: Prisma.SortOrder
+  updated_at?: Prisma.SortOrder
 }
 
 export type DeviceStateSumOrderByAggregateInput = {
-  temperature?: Prisma.SortOrder
   airflow?: Prisma.SortOrder
-  fanSpeed?: Prisma.SortOrder
+  fan_speed?: Prisma.SortOrder
 }
 
 export type DeviceStateCreateNestedOneWithoutDeviceInput = {
@@ -464,26 +452,22 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type DeviceStateCreateWithoutDeviceInput = {
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: $Enums.FanMode
-  fanSpeed?: number | null
-  trapdoorState?: string | null
-  updatedAt?: Date | string
+  fan_mode?: $Enums.FanMode
+  fan_speed?: number | null
+  trapdoor_state?: string | null
+  updated_at?: Date | string
 }
 
 export type DeviceStateUncheckedCreateWithoutDeviceInput = {
-  temperature?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: $Enums.FanMode
-  fanSpeed?: number | null
-  trapdoorState?: string | null
-  updatedAt?: Date | string
+  fan_mode?: $Enums.FanMode
+  fan_speed?: number | null
+  trapdoor_state?: string | null
+  updated_at?: Date | string
 }
 
 export type DeviceStateCreateOrConnectWithoutDeviceInput = {
@@ -503,69 +487,69 @@ export type DeviceStateUpdateToOneWithWhereWithoutDeviceInput = {
 }
 
 export type DeviceStateUpdateWithoutDeviceInput = {
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceStateUncheckedUpdateWithoutDeviceInput = {
-  temperature?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  temperature?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   airflow?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  fanMode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
-  fanSpeed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trapdoorState?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  fan_mode?: Prisma.EnumFanModeFieldUpdateOperationsInput | $Enums.FanMode
+  fan_speed?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  trapdoor_state?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
 
 export type DeviceStateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
-  fanMode?: boolean
-  fanSpeed?: boolean
-  trapdoorState?: boolean
-  updatedAt?: boolean
+  fan_mode?: boolean
+  fan_speed?: boolean
+  trapdoor_state?: boolean
+  updated_at?: boolean
   device?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deviceState"]>
 
 export type DeviceStateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
-  fanMode?: boolean
-  fanSpeed?: boolean
-  trapdoorState?: boolean
-  updatedAt?: boolean
+  fan_mode?: boolean
+  fan_speed?: boolean
+  trapdoor_state?: boolean
+  updated_at?: boolean
   device?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deviceState"]>
 
 export type DeviceStateSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
-  fanMode?: boolean
-  fanSpeed?: boolean
-  trapdoorState?: boolean
-  updatedAt?: boolean
+  fan_mode?: boolean
+  fan_speed?: boolean
+  trapdoor_state?: boolean
+  updated_at?: boolean
   device?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["deviceState"]>
 
 export type DeviceStateSelectScalar = {
-  deviceId?: boolean
+  device_id?: boolean
   temperature?: boolean
   airflow?: boolean
-  fanMode?: boolean
-  fanSpeed?: boolean
-  trapdoorState?: boolean
-  updatedAt?: boolean
+  fan_mode?: boolean
+  fan_speed?: boolean
+  trapdoor_state?: boolean
+  updated_at?: boolean
 }
 
-export type DeviceStateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"deviceId" | "temperature" | "airflow" | "fanMode" | "fanSpeed" | "trapdoorState" | "updatedAt", ExtArgs["result"]["deviceState"]>
+export type DeviceStateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"device_id" | "temperature" | "airflow" | "fan_mode" | "fan_speed" | "trapdoor_state" | "updated_at", ExtArgs["result"]["deviceState"]>
 export type DeviceStateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   device?: boolean | Prisma.DeviceDefaultArgs<ExtArgs>
 }
@@ -582,13 +566,13 @@ export type $DeviceStatePayload<ExtArgs extends runtime.Types.Extensions.Interna
     device: Prisma.$DevicePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    deviceId: string
-    temperature: runtime.Decimal | null
+    device_id: string
+    temperature: runtime.JsonValue | null
     airflow: runtime.Decimal | null
-    fanMode: $Enums.FanMode
-    fanSpeed: number | null
-    trapdoorState: string | null
-    updatedAt: Date
+    fan_mode: $Enums.FanMode
+    fan_speed: number | null
+    trapdoor_state: string | null
+    updated_at: Date
   }, ExtArgs["result"]["deviceState"]>
   composites: {}
 }
@@ -672,8 +656,8 @@ export interface DeviceStateDelegate<ExtArgs extends runtime.Types.Extensions.In
    * // Get first 10 DeviceStates
    * const deviceStates = await prisma.deviceState.findMany({ take: 10 })
    * 
-   * // Only select the `deviceId`
-   * const deviceStateWithDeviceIdOnly = await prisma.deviceState.findMany({ select: { deviceId: true } })
+   * // Only select the `device_id`
+   * const deviceStateWithDevice_idOnly = await prisma.deviceState.findMany({ select: { device_id: true } })
    * 
    */
   findMany<T extends DeviceStateFindManyArgs>(args?: Prisma.SelectSubset<T, DeviceStateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DeviceStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -717,9 +701,9 @@ export interface DeviceStateDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   ]
    * })
    * 
-   * // Create many DeviceStates and only return the `deviceId`
-   * const deviceStateWithDeviceIdOnly = await prisma.deviceState.createManyAndReturn({
-   *   select: { deviceId: true },
+   * // Create many DeviceStates and only return the `device_id`
+   * const deviceStateWithDevice_idOnly = await prisma.deviceState.createManyAndReturn({
+   *   select: { device_id: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -808,9 +792,9 @@ export interface DeviceStateDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   ]
    * })
    * 
-   * // Update zero or more DeviceStates and only return the `deviceId`
-   * const deviceStateWithDeviceIdOnly = await prisma.deviceState.updateManyAndReturn({
-   *   select: { deviceId: true },
+   * // Update zero or more DeviceStates and only return the `device_id`
+   * const deviceStateWithDevice_idOnly = await prisma.deviceState.updateManyAndReturn({
+   *   select: { device_id: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1013,13 +997,13 @@ export interface Prisma__DeviceStateClient<T, Null = never, ExtArgs extends runt
  * Fields of the DeviceState model
  */
 export interface DeviceStateFieldRefs {
-  readonly deviceId: Prisma.FieldRef<"DeviceState", 'String'>
-  readonly temperature: Prisma.FieldRef<"DeviceState", 'Decimal'>
+  readonly device_id: Prisma.FieldRef<"DeviceState", 'String'>
+  readonly temperature: Prisma.FieldRef<"DeviceState", 'Json'>
   readonly airflow: Prisma.FieldRef<"DeviceState", 'Decimal'>
-  readonly fanMode: Prisma.FieldRef<"DeviceState", 'FanMode'>
-  readonly fanSpeed: Prisma.FieldRef<"DeviceState", 'Int'>
-  readonly trapdoorState: Prisma.FieldRef<"DeviceState", 'String'>
-  readonly updatedAt: Prisma.FieldRef<"DeviceState", 'DateTime'>
+  readonly fan_mode: Prisma.FieldRef<"DeviceState", 'FanMode'>
+  readonly fan_speed: Prisma.FieldRef<"DeviceState", 'Int'>
+  readonly trapdoor_state: Prisma.FieldRef<"DeviceState", 'String'>
+  readonly updated_at: Prisma.FieldRef<"DeviceState", 'DateTime'>
 }
     
 
