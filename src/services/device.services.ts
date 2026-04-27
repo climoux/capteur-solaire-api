@@ -29,14 +29,19 @@ export const deleteDevice = async (id: string) => {
 }
 
 export const insertDevice = async (id: string, pairingCode: string) => {
+    const exists = await prisma.device.findFirst({
+        where: { device_id: id }
+    });
+    if(exists) return { ...exists };
+
     const device = await prisma.device.create({
-        data: { device_id: id },
+        data: { device_id: id }
     });
     const pairing = await prisma.devicePairing.create({
         data: {
             device_id: id,
             code: pairingCode,
-            expires_at: new Date(Date.now() + 5 * 60 * 1000) // Expire dans 5 minutes
+            expires_at: new Date(Date.now() + 15 * 60 * 1000) // Expire dans 5 minutes
         }
     })
 
