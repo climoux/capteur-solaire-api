@@ -9,13 +9,11 @@ import 'dotenv/config';
 
 import { registerWS, broadcast } from './utils/websocket.ts';
 import { initMQTT } from './utils/mqtt.ts';
-import { generateCode } from './utils/generateCode.ts';
 import { hashSecurity, verifyHash } from './utils/hash.ts';
-import generateToken from './utils/generateToken.ts';
 
 import { PORT } from './constants.ts';
 
-import { getDevice, deleteDevice, type PayloadType, insertDevice, updateDevice } from './services/device.services.ts';
+import { getDevice, deleteDevice, type PayloadType, updateDevice } from './services/device.services.ts';
 import { upsertTelemetry } from './services/telemetry.services.ts';
 
 import { prisma } from './db/prisma.ts';
@@ -33,7 +31,7 @@ const mqttClient = initMQTT(broadcast)
 // -- CORS protection
 const whitelist = [
     process.env.NODE_ENV === 'development' && 'http://localhost:3000', // development only
-];
+].filter(Boolean);
 
 const corsOptions: FastifyCorsOptions = {
     credentials: true,
@@ -57,28 +55,14 @@ fastify.decorate('authenticate', async (req: any, res: any) => {
     }
 });
 
-
 // Endpoints
 fastify.get('/', async (req, res) => {
     return {};
 });
 
-// -- Enregistrer un nouveau capteur
-fastify.post('/devices', async (req, res) => {
-    const deviceId = Math.random().toString(36).substring(2, 13); // ID de 11 caractères
-    const pairingCode = generateCode(4); // Code à 4 caractères (majuscules et chiffres)
-    
-    await insertDevice(deviceId, pairingCode);
-
-    return {
-        deviceId,
-        pairingCode
-    };
-});
-
 // -- Ajouter le renouvellement du code d'appareillage (pairing code) pour se connecter à un capteur
 // Cet endpoint est uniquement appelé par le capteur lui même pour créer un pairing code temporaire
-fastify.post('/devices/:id/pairing-code', async (req, res) => {
+/*fastify.post('/devices/:id/pairing-code', async (req, res) => {
     const { id } = req.params as { id: string };
 
     await updateDevice(id, {
@@ -87,7 +71,7 @@ fastify.post('/devices/:id/pairing-code', async (req, res) => {
     })
 
     return { status: 'ok' };
-});
+});*/
 
 // -- Se connecter a un capteur via le pairing code
 // Cet endpoint est uniquement appelé par l'application
@@ -100,8 +84,6 @@ fastify.post('/devices/pair', async (req, res) => {
         include: { device: true },
     });
     if (!codeEntry) return res.status(400).send({ code: 400, error: 'Invalid pairing code', errorCode: "INVALID" });
-    if (codeEntry.expires_at < new Date()) return res.status(400).send({ code: 400, error: 'Pairing code expired', errorCode: "EXPIRED" });
-    if (codeEntry.used) return res.status(401).send({ code: 401, error: 'Pairing code already used', errorCode: "USED" });
 
     await prisma.devicePairing.update({
         where: { id: codeEntry.id },
