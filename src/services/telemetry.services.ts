@@ -1,20 +1,20 @@
-import { prisma } from '../db/prisma.ts'
+import { prisma } from '../db/prisma.js'
 
 export async function upsertTelemetry(
-    deviceId: string,
+    device_id: string,
     temperature: { in: number; out: number; target: number },
     airflow: number
 ) {
     return prisma.telemetry.upsert({
         where: {
-            deviceId
+            device_id
         },
         update: {
             temperature,
             airflow,
         },
         create: {
-            deviceId,
+            device_id,
             temperature,
             airflow,
         }

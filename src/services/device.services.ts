@@ -1,4 +1,4 @@
-import { prisma } from '../db/prisma.ts'
+import { prisma } from '../db/prisma.js'
 
 export type PayloadType = {
     temperature?: {
@@ -45,7 +45,7 @@ export const insertDevice = async (id: string, pairingCode: string) => {
         }
     })
 
-    return { ...device, pairing };
+    return { device, pairing };
 }
 
 export const updateDevice = async (id: string, data: any) => {

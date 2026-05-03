@@ -8,10 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Device.ts'
-export type * from './models/DevicePairing.ts'
-export type * from './models/Telemetry.ts'
-export type * from './models/Command.ts'
-export type * from './models/DeviceState.ts'
-export type * from './models/DeviceLog.ts'
-export type * from './commonInputTypes.ts'
+export type * from './models/Device.js'
+export type * from './models/DevicePairing.js'
+export type * from './models/Telemetry.js'
+export type * from './models/Command.js'
+export type * from './models/DeviceState.js'
+export type * from './models/DeviceLog.js'
+export type * from './commonInputTypes.js'

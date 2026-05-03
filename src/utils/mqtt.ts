@@ -1,10 +1,9 @@
 import mqtt from 'mqtt';
 import crypto from "crypto";
+import 'dotenv/config';
 
-import { insertDevice } from '../services/device.services.ts';
-import { getDevice, updateDevice } from '../services/device.services.ts';
-
-import { generateCode } from './generateCode.ts';
+import { insertDevice, getDevice, updateDevice } from '../services/device.services.js';
+import { generateCode } from './generateCode.js';
 
 type BroadcastFunction = (deviceId: string, data: { event: string; data: any }) => void;
 let broadcast: BroadcastFunction;
@@ -12,9 +11,9 @@ let broadcast: BroadcastFunction;
 export const initMQTT = (setBroadcast: BroadcastFunction) => {
     broadcast = setBroadcast;
 
-    const client = mqtt.connect('mqtt://172.16.4.51:1883', {
-        username: 'backend',
-        password: 'backend_secret'
+    const client = mqtt.connect('mqtt://192.168.1.13:1883', {
+        username: process.env.MQTT_USERNAME ?? 'backend',
+        password: process.env.MQTT_PASSWORD ?? 'backend_secret'
     });
 
     client.on('connect', () => {
@@ -25,39 +24,33 @@ export const initMQTT = (setBroadcast: BroadcastFunction) => {
         client.subscribe('devices/+/status');
     });
 
-  client.on('message', async (topic, message) => {
-        let payload: any;
-        try {
-            payload = JSON.parse(message.toString());
-        } catch (err) {
-            return;
-        }
-        if (typeof payload !== 'object') return;
+    client.on('message', async (topic, message) => {
+        const msg = message.toString().trim();
 
+        // REGISTER
         if (topic === 'devices/register') {
-            const { clientId } = payload;
-            if (!clientId || typeof clientId !== 'string') {
-                console.error('Invalid clientId');
+            // Format attendu : REG|clientId
+            const parts = msg.split('|');
+            if (parts.length !== 2 || parts[0] !== 'REG') {
+                console.error('Invalid register format');
                 return;
             }
 
+            const clientId = parts[1];
+            if (!clientId) return;
+
             const deviceId = crypto.randomUUID();
             const pairingCode = generateCode(4);
-    
+
             const created = await insertDevice(deviceId, pairingCode);
-        
-            client.publish(
-                `devices/${clientId}/register/response`,
-                JSON.stringify({
-                    deviceId: created.device_id,
-                    pairingCode: created.pairing ? created.pairing.code : undefined
-                }),
-                { qos: 1 }
-            );
-    
+            const response = ["OK", created.device?.device_id || "", created.pairing?.code || ""].join('|');
+
+            client.publish(`devices/${clientId}/register/response`, response, { qos: 1 });
+
             return;
         }
 
+        // TELEMETRY / STATUS 
         const match = topic.match(/^devices\/(.+)\/(telemetry|status)$/);
         if (!match) return;
 
@@ -67,23 +60,53 @@ export const initMQTT = (setBroadcast: BroadcastFunction) => {
         const device = await getDevice(deviceId);
         if (!device) return;
 
+        /** Format attendu :
+        /* TEMP|23.5|21.0
+        /* FAN|1
+        **/
+        const parts = msg.split('|') as any[];
+
+        let data: any = {};
+
+        switch (parts[0]) {
+            case 'TEMP':
+                data = {
+                    temp1: parseFloat(parts[1]),
+                    temp2: parseFloat(parts[2])
+                };
+                break;
+
+            case 'FAN':
+                data = {
+                    fan: parts[1] === '1'
+                };
+                break;
+
+            case 'STATE':
+                data = {
+                    state: parts[1]
+                };
+                break;
+
+            default:
+                console.warn('Unknown message:', msg);
+                return;
+        }
+
         await updateDevice(deviceId, {
             lastSeen: new Date(),
             deviceState: {
-                update: {
-                    ...payload,
-                }
+                update: data
             }
         });
 
-        console.log(`${type} reçu`, deviceId, payload);
+        console.log(`${type} reçu`, deviceId, data);
 
-        // push websocket
         broadcast(deviceId, {
             event: type,
-            data: payload
+            data
         });
-  });
+    });
 
-  return client;
-}
+    return client;
+};

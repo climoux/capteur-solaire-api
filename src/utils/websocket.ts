@@ -1,6 +1,6 @@
 const clients = new Map();
 
-import { getDevice } from '../services/device.services.ts';
+import { getDevice } from '../services/device.services.js';
 
 export const registerWS = (fastify: any) => {
     fastify.get('/ws/devices/:deviceId', { websocket: true }, async (conn: any, req: any) => {
@@ -9,7 +9,7 @@ export const registerWS = (fastify: any) => {
         
         const device = await getDevice(deviceId);
 
-        if (!device || device.deviceSecret !== token) {
+        if (!device || device.device_secret !== token) {
             conn.socket.close();
             return;
         }

@@ -7,16 +7,16 @@ import jwt from '@fastify/jwt';
 import crypto from 'crypto';
 import 'dotenv/config';
 
-import { registerWS, broadcast } from './utils/websocket.ts';
-import { initMQTT } from './utils/mqtt.ts';
-import { hashSecurity, verifyHash } from './utils/hash.ts';
+import { registerWS, broadcast } from './utils/websocket.js';
+import { initMQTT } from './utils/mqtt.js';
+import { hashSecurity, verifyHash } from './utils/hash.js';
 
-import { PORT } from './constants.ts';
+import { PORT } from './constants.js';
 
-import { getDevice, deleteDevice, type PayloadType, updateDevice } from './services/device.services.ts';
-import { upsertTelemetry } from './services/telemetry.services.ts';
+import { getDevice, deleteDevice, type PayloadType, updateDevice } from './services/device.services.js';
+import { upsertTelemetry } from './services/telemetry.services.js';
 
-import { prisma } from './db/prisma.ts';
+import { prisma } from './db/prisma.js';
 
 const fastify = Fastify({ logger: process.env.NODE_ENV === 'production' ? false : true });
 
