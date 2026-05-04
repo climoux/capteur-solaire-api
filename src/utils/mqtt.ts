@@ -11,7 +11,7 @@ let broadcast: BroadcastFunction;
 export const initMQTT = (setBroadcast: BroadcastFunction) => {
     broadcast = setBroadcast;
 
-    const client = mqtt.connect('mqtt://192.168.1.13:1883', {
+    const client = mqtt.connect('mqtt://localhost:1883', {
         username: process.env.MQTT_USERNAME ?? 'backend',
         password: process.env.MQTT_PASSWORD ?? 'backend_secret'
     });
