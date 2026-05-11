@@ -9,37 +9,37 @@
 * 🟢 You can import this file directly.
 */
 
-export const FanMode = {
+export const fan_mode = {
   manual: 'manual',
   auto: 'auto'
 } as const
 
-export type FanMode = (typeof FanMode)[keyof typeof FanMode]
+export type fan_mode = (typeof fan_mode)[keyof typeof fan_mode]
 
 
-export const EventType = {
+export const event_type = {
   connect: 'connect',
   disconnect: 'disconnect',
   error: 'error',
   telemetry: 'telemetry'
 } as const
 
-export type EventType = (typeof EventType)[keyof typeof EventType]
+export type event_type = (typeof event_type)[keyof typeof event_type]
 
 
-export const CommandType = {
+export const command_type = {
   temperature: 'temperature',
   fan: 'fan',
   trapdoor: 'trapdoor'
 } as const
 
-export type CommandType = (typeof CommandType)[keyof typeof CommandType]
+export type command_type = (typeof command_type)[keyof typeof command_type]
 
 
-export const CommandStatus = {
+export const command_status = {
   pending: 'pending',
   sent: 'sent',
   ack: 'ack'
 } as const
 
-export type CommandStatus = (typeof CommandStatus)[keyof typeof CommandStatus]
+export type command_status = (typeof command_status)[keyof typeof command_status]

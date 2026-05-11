@@ -8,25 +8,25 @@ datasource db {
 }
 
 // Enums
-enum FanMode {
+enum fan_mode {
     manual
     auto
 }
 
-enum EventType {
+enum event_type {
     connect
     disconnect
     error
     telemetry
 }
 
-enum CommandType {
+enum command_type {
     temperature
     fan
     trapdoor
 }
 
-enum CommandStatus {
+enum command_status {
     pending
     sent
     ack
@@ -34,8 +34,8 @@ enum CommandStatus {
 
 // Models
 model Device {
-    device_id     String          @id @unique @db.VarChar(20)
-    device_secret String?         @unique
+    device_id     String          @id @unique @db.VarChar(64)
+    device_secret String?         @unique @db.VarChar(128)
     last_seen     DateTime?
     created_at    DateTime        @default(now())
     
@@ -50,7 +50,7 @@ model Device {
 
 model DevicePairing {
     id         Int      @id @default(autoincrement())
-    device_id  String   @db.VarChar(20)
+    device_id  String   @db.VarChar(64)
     code       String   @unique @db.VarChar(4)
     expires_at DateTime
     used       Boolean  @default(false)
@@ -63,10 +63,10 @@ model DevicePairing {
 }
 
 model Telemetry {
-    device_id   String   @unique @db.VarChar(20)
+    device_id   String   @unique @db.VarChar(64)
     device      Device   @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
     temperature Json?
-    airflow     Decimal  @db.Decimal(5, 2)
+    airflow     Float
     timestamp   DateTime @default(now())
 
     @@id([device_id, timestamp])
@@ -76,11 +76,11 @@ model Telemetry {
 
 model Command {
     id           Int           @id @default(autoincrement())
-    device_id    String        @unique @db.VarChar(20)
+    device_id    String        @db.VarChar(64)
     device       Device        @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
-    command_type CommandType
+    command_type command_type
     payload      Json
-    status       CommandStatus @default(pending)
+    status       command_status @default(pending)
     created_at   DateTime      @default(now())
     sent_at      DateTime?
     ack_at       DateTime?
@@ -90,11 +90,11 @@ model Command {
 }
 
 model DeviceState {
-    device_id      String   @id @unique @db.VarChar(20)
+    device_id      String   @id @unique @db.VarChar(64)
     device         Device   @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
     temperature    Json?    
     airflow        Float?
-    fan_mode       FanMode  @default(auto)
+    fan_mode       fan_mode  @default(auto)
     fan_speed      Int?
     trapdoor_state String?  @db.VarChar(10)
     updated_at     DateTime @default(now()) @updatedAt
@@ -104,9 +104,9 @@ model DeviceState {
 
 model DeviceLog {
     id         Int        @id @default(autoincrement())
-    device_id  String     @unique @db.VarChar(20)
+    device_id  String     @db.VarChar(64)
     device     Device     @relation(fields: [device_id], references: [device_id], onDelete: Cascade)
-    event_type EventType?
+    event_type event_type?
     payload    Json?
     created_at DateTime   @default(now())
 

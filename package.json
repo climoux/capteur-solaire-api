@@ -26,13 +26,12 @@
   "scripts": {
     "build": "prisma generate && tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
-    "dev": "prisma generate && tsc -p tsconfig.json && node dist/src/index.js"
+    "dev": "tsc -p tsconfig.json && node dist/src/index.js"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
     "@fastify/express": "^4.0.4",
     "@fastify/helmet": "^13.0.2",
-    "@fastify/jwt": "^10.0.0",
     "@fastify/websocket": "^11.2.0",
     "@prisma/adapter-pg": "^7.7.0",
     "@prisma/client": "^7.7.0",
@@ -40,7 +39,8 @@
     "dotenv": "^17.4.1",
     "fastify": "^5.8.4",
     "mqtt": "^5.15.1",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "ws": "^8.20.0"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",

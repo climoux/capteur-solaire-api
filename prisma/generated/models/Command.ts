@@ -37,8 +37,8 @@ export type CommandSumAggregateOutputType = {
 export type CommandMinAggregateOutputType = {
   id: number | null
   device_id: string | null
-  command_type: $Enums.CommandType | null
-  status: $Enums.CommandStatus | null
+  command_type: $Enums.command_type | null
+  status: $Enums.command_status | null
   created_at: Date | null
   sent_at: Date | null
   ack_at: Date | null
@@ -47,8 +47,8 @@ export type CommandMinAggregateOutputType = {
 export type CommandMaxAggregateOutputType = {
   id: number | null
   device_id: string | null
-  command_type: $Enums.CommandType | null
-  status: $Enums.CommandStatus | null
+  command_type: $Enums.command_type | null
+  status: $Enums.command_status | null
   created_at: Date | null
   sent_at: Date | null
   ack_at: Date | null
@@ -196,9 +196,9 @@ export type CommandGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type CommandGroupByOutputType = {
   id: number
   device_id: string
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: runtime.JsonValue
-  status: $Enums.CommandStatus
+  status: $Enums.command_status
   created_at: Date
   sent_at: Date | null
   ack_at: Date | null
@@ -230,9 +230,9 @@ export type CommandWhereInput = {
   NOT?: Prisma.CommandWhereInput | Prisma.CommandWhereInput[]
   id?: Prisma.IntFilter<"Command"> | number
   device_id?: Prisma.StringFilter<"Command"> | string
-  command_type?: Prisma.EnumCommandTypeFilter<"Command"> | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFilter<"Command"> | $Enums.command_type
   payload?: Prisma.JsonFilter<"Command">
-  status?: Prisma.EnumCommandStatusFilter<"Command"> | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFilter<"Command"> | $Enums.command_status
   created_at?: Prisma.DateTimeFilter<"Command"> | Date | string
   sent_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
   ack_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
@@ -253,18 +253,18 @@ export type CommandOrderByWithRelationInput = {
 
 export type CommandWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  device_id?: string
   AND?: Prisma.CommandWhereInput | Prisma.CommandWhereInput[]
   OR?: Prisma.CommandWhereInput[]
   NOT?: Prisma.CommandWhereInput | Prisma.CommandWhereInput[]
-  command_type?: Prisma.EnumCommandTypeFilter<"Command"> | $Enums.CommandType
+  device_id?: Prisma.StringFilter<"Command"> | string
+  command_type?: Prisma.Enumcommand_typeFilter<"Command"> | $Enums.command_type
   payload?: Prisma.JsonFilter<"Command">
-  status?: Prisma.EnumCommandStatusFilter<"Command"> | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFilter<"Command"> | $Enums.command_status
   created_at?: Prisma.DateTimeFilter<"Command"> | Date | string
   sent_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
   ack_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
-}, "id" | "device_id">
+}, "id">
 
 export type CommandOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -288,18 +288,18 @@ export type CommandScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CommandScalarWhereWithAggregatesInput | Prisma.CommandScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Command"> | number
   device_id?: Prisma.StringWithAggregatesFilter<"Command"> | string
-  command_type?: Prisma.EnumCommandTypeWithAggregatesFilter<"Command"> | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeWithAggregatesFilter<"Command"> | $Enums.command_type
   payload?: Prisma.JsonWithAggregatesFilter<"Command">
-  status?: Prisma.EnumCommandStatusWithAggregatesFilter<"Command"> | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusWithAggregatesFilter<"Command"> | $Enums.command_status
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Command"> | Date | string
   sent_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Command"> | Date | string | null
   ack_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Command"> | Date | string | null
 }
 
 export type CommandCreateInput = {
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
@@ -309,18 +309,18 @@ export type CommandCreateInput = {
 export type CommandUncheckedCreateInput = {
   id?: number
   device_id: string
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
 }
 
 export type CommandUpdateInput = {
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -330,9 +330,9 @@ export type CommandUpdateInput = {
 export type CommandUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   device_id?: Prisma.StringFieldUpdateOperationsInput | string
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -341,18 +341,18 @@ export type CommandUncheckedUpdateInput = {
 export type CommandCreateManyInput = {
   id?: number
   device_id: string
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
 }
 
 export type CommandUpdateManyMutationInput = {
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -361,9 +361,9 @@ export type CommandUpdateManyMutationInput = {
 export type CommandUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   device_id?: Prisma.StringFieldUpdateOperationsInput | string
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -460,18 +460,18 @@ export type CommandUncheckedUpdateManyWithoutDeviceNestedInput = {
   deleteMany?: Prisma.CommandScalarWhereInput | Prisma.CommandScalarWhereInput[]
 }
 
-export type EnumCommandTypeFieldUpdateOperationsInput = {
-  set?: $Enums.CommandType
+export type Enumcommand_typeFieldUpdateOperationsInput = {
+  set?: $Enums.command_type
 }
 
-export type EnumCommandStatusFieldUpdateOperationsInput = {
-  set?: $Enums.CommandStatus
+export type Enumcommand_statusFieldUpdateOperationsInput = {
+  set?: $Enums.command_status
 }
 
 export type CommandCreateWithoutDeviceInput = {
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
@@ -479,9 +479,9 @@ export type CommandCreateWithoutDeviceInput = {
 
 export type CommandUncheckedCreateWithoutDeviceInput = {
   id?: number
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
@@ -519,9 +519,9 @@ export type CommandScalarWhereInput = {
   NOT?: Prisma.CommandScalarWhereInput | Prisma.CommandScalarWhereInput[]
   id?: Prisma.IntFilter<"Command"> | number
   device_id?: Prisma.StringFilter<"Command"> | string
-  command_type?: Prisma.EnumCommandTypeFilter<"Command"> | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFilter<"Command"> | $Enums.command_type
   payload?: Prisma.JsonFilter<"Command">
-  status?: Prisma.EnumCommandStatusFilter<"Command"> | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFilter<"Command"> | $Enums.command_status
   created_at?: Prisma.DateTimeFilter<"Command"> | Date | string
   sent_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
   ack_at?: Prisma.DateTimeNullableFilter<"Command"> | Date | string | null
@@ -529,18 +529,18 @@ export type CommandScalarWhereInput = {
 
 export type CommandCreateManyDeviceInput = {
   id?: number
-  command_type: $Enums.CommandType
+  command_type: $Enums.command_type
   payload: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.CommandStatus
+  status?: $Enums.command_status
   created_at?: Date | string
   sent_at?: Date | string | null
   ack_at?: Date | string | null
 }
 
 export type CommandUpdateWithoutDeviceInput = {
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -548,9 +548,9 @@ export type CommandUpdateWithoutDeviceInput = {
 
 export type CommandUncheckedUpdateWithoutDeviceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -558,9 +558,9 @@ export type CommandUncheckedUpdateWithoutDeviceInput = {
 
 export type CommandUncheckedUpdateManyWithoutDeviceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  command_type?: Prisma.EnumCommandTypeFieldUpdateOperationsInput | $Enums.CommandType
+  command_type?: Prisma.Enumcommand_typeFieldUpdateOperationsInput | $Enums.command_type
   payload?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumCommandStatusFieldUpdateOperationsInput | $Enums.CommandStatus
+  status?: Prisma.Enumcommand_statusFieldUpdateOperationsInput | $Enums.command_status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sent_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ack_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -634,9 +634,9 @@ export type $CommandPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     device_id: string
-    command_type: $Enums.CommandType
+    command_type: $Enums.command_type
     payload: runtime.JsonValue
-    status: $Enums.CommandStatus
+    status: $Enums.command_status
     created_at: Date
     sent_at: Date | null
     ack_at: Date | null
@@ -1066,9 +1066,9 @@ export interface Prisma__CommandClient<T, Null = never, ExtArgs extends runtime.
 export interface CommandFieldRefs {
   readonly id: Prisma.FieldRef<"Command", 'Int'>
   readonly device_id: Prisma.FieldRef<"Command", 'String'>
-  readonly command_type: Prisma.FieldRef<"Command", 'CommandType'>
+  readonly command_type: Prisma.FieldRef<"Command", 'command_type'>
   readonly payload: Prisma.FieldRef<"Command", 'Json'>
-  readonly status: Prisma.FieldRef<"Command", 'CommandStatus'>
+  readonly status: Prisma.FieldRef<"Command", 'command_status'>
   readonly created_at: Prisma.FieldRef<"Command", 'DateTime'>
   readonly sent_at: Prisma.FieldRef<"Command", 'DateTime'>
   readonly ack_at: Prisma.FieldRef<"Command", 'DateTime'>

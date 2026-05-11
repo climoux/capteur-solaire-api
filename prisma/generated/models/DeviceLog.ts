@@ -37,14 +37,14 @@ export type DeviceLogSumAggregateOutputType = {
 export type DeviceLogMinAggregateOutputType = {
   id: number | null
   device_id: string | null
-  event_type: $Enums.EventType | null
+  event_type: $Enums.event_type | null
   created_at: Date | null
 }
 
 export type DeviceLogMaxAggregateOutputType = {
   id: number | null
   device_id: string | null
-  event_type: $Enums.EventType | null
+  event_type: $Enums.event_type | null
   created_at: Date | null
 }
 
@@ -178,7 +178,7 @@ export type DeviceLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type DeviceLogGroupByOutputType = {
   id: number
   device_id: string
-  event_type: $Enums.EventType | null
+  event_type: $Enums.event_type | null
   payload: runtime.JsonValue | null
   created_at: Date
   _count: DeviceLogCountAggregateOutputType | null
@@ -209,7 +209,7 @@ export type DeviceLogWhereInput = {
   NOT?: Prisma.DeviceLogWhereInput | Prisma.DeviceLogWhereInput[]
   id?: Prisma.IntFilter<"DeviceLog"> | number
   device_id?: Prisma.StringFilter<"DeviceLog"> | string
-  event_type?: Prisma.EnumEventTypeNullableFilter<"DeviceLog"> | $Enums.EventType | null
+  event_type?: Prisma.Enumevent_typeNullableFilter<"DeviceLog"> | $Enums.event_type | null
   payload?: Prisma.JsonNullableFilter<"DeviceLog">
   created_at?: Prisma.DateTimeFilter<"DeviceLog"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
@@ -226,15 +226,15 @@ export type DeviceLogOrderByWithRelationInput = {
 
 export type DeviceLogWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  device_id?: string
   AND?: Prisma.DeviceLogWhereInput | Prisma.DeviceLogWhereInput[]
   OR?: Prisma.DeviceLogWhereInput[]
   NOT?: Prisma.DeviceLogWhereInput | Prisma.DeviceLogWhereInput[]
-  event_type?: Prisma.EnumEventTypeNullableFilter<"DeviceLog"> | $Enums.EventType | null
+  device_id?: Prisma.StringFilter<"DeviceLog"> | string
+  event_type?: Prisma.Enumevent_typeNullableFilter<"DeviceLog"> | $Enums.event_type | null
   payload?: Prisma.JsonNullableFilter<"DeviceLog">
   created_at?: Prisma.DateTimeFilter<"DeviceLog"> | Date | string
   device?: Prisma.XOR<Prisma.DeviceScalarRelationFilter, Prisma.DeviceWhereInput>
-}, "id" | "device_id">
+}, "id">
 
 export type DeviceLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -255,13 +255,13 @@ export type DeviceLogScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DeviceLogScalarWhereWithAggregatesInput | Prisma.DeviceLogScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"DeviceLog"> | number
   device_id?: Prisma.StringWithAggregatesFilter<"DeviceLog"> | string
-  event_type?: Prisma.EnumEventTypeNullableWithAggregatesFilter<"DeviceLog"> | $Enums.EventType | null
+  event_type?: Prisma.Enumevent_typeNullableWithAggregatesFilter<"DeviceLog"> | $Enums.event_type | null
   payload?: Prisma.JsonNullableWithAggregatesFilter<"DeviceLog">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"DeviceLog"> | Date | string
 }
 
 export type DeviceLogCreateInput = {
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
   device: Prisma.DeviceCreateNestedOneWithoutDeviceLogsInput
@@ -270,13 +270,13 @@ export type DeviceLogCreateInput = {
 export type DeviceLogUncheckedCreateInput = {
   id?: number
   device_id: string
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
 }
 
 export type DeviceLogUpdateInput = {
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   device?: Prisma.DeviceUpdateOneRequiredWithoutDeviceLogsNestedInput
@@ -285,7 +285,7 @@ export type DeviceLogUpdateInput = {
 export type DeviceLogUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   device_id?: Prisma.StringFieldUpdateOperationsInput | string
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -293,13 +293,13 @@ export type DeviceLogUncheckedUpdateInput = {
 export type DeviceLogCreateManyInput = {
   id?: number
   device_id: string
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
 }
 
 export type DeviceLogUpdateManyMutationInput = {
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -307,7 +307,7 @@ export type DeviceLogUpdateManyMutationInput = {
 export type DeviceLogUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   device_id?: Prisma.StringFieldUpdateOperationsInput | string
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -394,19 +394,19 @@ export type DeviceLogUncheckedUpdateManyWithoutDeviceNestedInput = {
   deleteMany?: Prisma.DeviceLogScalarWhereInput | Prisma.DeviceLogScalarWhereInput[]
 }
 
-export type NullableEnumEventTypeFieldUpdateOperationsInput = {
-  set?: $Enums.EventType | null
+export type NullableEnumevent_typeFieldUpdateOperationsInput = {
+  set?: $Enums.event_type | null
 }
 
 export type DeviceLogCreateWithoutDeviceInput = {
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
 }
 
 export type DeviceLogUncheckedCreateWithoutDeviceInput = {
   id?: number
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
 }
@@ -443,34 +443,34 @@ export type DeviceLogScalarWhereInput = {
   NOT?: Prisma.DeviceLogScalarWhereInput | Prisma.DeviceLogScalarWhereInput[]
   id?: Prisma.IntFilter<"DeviceLog"> | number
   device_id?: Prisma.StringFilter<"DeviceLog"> | string
-  event_type?: Prisma.EnumEventTypeNullableFilter<"DeviceLog"> | $Enums.EventType | null
+  event_type?: Prisma.Enumevent_typeNullableFilter<"DeviceLog"> | $Enums.event_type | null
   payload?: Prisma.JsonNullableFilter<"DeviceLog">
   created_at?: Prisma.DateTimeFilter<"DeviceLog"> | Date | string
 }
 
 export type DeviceLogCreateManyDeviceInput = {
   id?: number
-  event_type?: $Enums.EventType | null
+  event_type?: $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Date | string
 }
 
 export type DeviceLogUpdateWithoutDeviceInput = {
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceLogUncheckedUpdateWithoutDeviceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type DeviceLogUncheckedUpdateManyWithoutDeviceInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  event_type?: Prisma.NullableEnumEventTypeFieldUpdateOperationsInput | $Enums.EventType | null
+  event_type?: Prisma.NullableEnumevent_typeFieldUpdateOperationsInput | $Enums.event_type | null
   payload?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -531,7 +531,7 @@ export type $DeviceLogPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     device_id: string
-    event_type: $Enums.EventType | null
+    event_type: $Enums.event_type | null
     payload: runtime.JsonValue | null
     created_at: Date
   }, ExtArgs["result"]["deviceLog"]>
@@ -960,7 +960,7 @@ export interface Prisma__DeviceLogClient<T, Null = never, ExtArgs extends runtim
 export interface DeviceLogFieldRefs {
   readonly id: Prisma.FieldRef<"DeviceLog", 'Int'>
   readonly device_id: Prisma.FieldRef<"DeviceLog", 'String'>
-  readonly event_type: Prisma.FieldRef<"DeviceLog", 'EventType'>
+  readonly event_type: Prisma.FieldRef<"DeviceLog", 'event_type'>
   readonly payload: Prisma.FieldRef<"DeviceLog", 'Json'>
   readonly created_at: Prisma.FieldRef<"DeviceLog", 'DateTime'>
 }

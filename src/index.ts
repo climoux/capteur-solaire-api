@@ -3,17 +3,16 @@ import fastifyExpress from '@fastify/express';
 import cors from '@fastify/cors';
 import type { FastifyCorsOptions } from '@fastify/cors';
 import websocket from '@fastify/websocket';
-import jwt from '@fastify/jwt';
 import crypto from 'crypto';
 import 'dotenv/config';
 
 import { registerWS, broadcast } from './utils/websocket.js';
-import { initMQTT } from './utils/mqtt.js';
 import { hashSecurity, verifyHash } from './utils/hash.js';
+import { generateCode } from './utils/generateCode.js';
 
 import { PORT } from './constants.js';
 
-import { getDevice, deleteDevice, type PayloadType, updateDevice } from './services/device.services.js';
+import { getDevice, deleteDevice, insertDevice, type PayloadType, updateDevice } from './services/device.services.js';
 import { upsertTelemetry } from './services/telemetry.services.js';
 
 import { prisma } from './db/prisma.js';
@@ -25,8 +24,6 @@ await fastify.register(fastifyExpress);
 await fastify.register(websocket);
 // WebSocket
 registerWS(fastify);
-// MQTT
-const mqttClient = initMQTT(broadcast)
 
 // -- CORS protection
 const whitelist = [
@@ -36,7 +33,7 @@ const whitelist = [
 const corsOptions: FastifyCorsOptions = {
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization', 'ww-ip'],
-    methods: ['GET', 'PUT','POST', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
     optionsSuccessStatus: 200,
     origin: async (origin: string | undefined) => {
         return whitelist.indexOf(origin!) !== -1 || !origin;
@@ -44,34 +41,25 @@ const corsOptions: FastifyCorsOptions = {
 }
 await fastify.register(cors, corsOptions);
 
-// -- JWT
-fastify.register(jwt, { secret: process.env.JWT_SECRET || 'super-secret-key' });
-
-fastify.decorate('authenticate', async (req: any, res: any) => {
-    try {
-        await req.jwtVerify()
-    }catch (err){
-        res.status(401).send({ error: 'Unauthorized' })
-    }
-});
-
 // Endpoints
 fastify.get('/', async (req, res) => {
     return {};
 });
 
-// -- Ajouter le renouvellement du code d'appareillage (pairing code) pour se connecter à un capteur
-// Cet endpoint est uniquement appelé par le capteur lui même pour créer un pairing code temporaire
-/*fastify.post('/devices/:id/pairing-code', async (req, res) => {
-    const { id } = req.params as { id: string };
+// -- Enregistrer un nouveau capteur
+// Cet endpoint remplace l'enregistrement MQTT précédent
+fastify.post('/devices/register', async (req, res) => {
+    const deviceId = crypto.randomUUID();
+    const pairingCode = generateCode(4);
 
-    await updateDevice(id, {
-        pairing_code: generateCode(4), // Code à 4 caractères (majuscules et chiffres)
-        pairing_expires_at: new Date(Date.now() + 15 * 60 * 1000) // Expire dans 15 minutes
-    })
+    const created = await insertDevice(deviceId, pairingCode);
 
-    return { status: 'ok' };
-});*/
+    return {
+        status: 'OK',
+        deviceId: created.device?.device_id || "",
+        pairingCode: created.pairing?.code || ""
+    };
+});
 
 // -- Se connecter a un capteur via le pairing code
 // Cet endpoint est uniquement appelé par l'application
@@ -114,11 +102,11 @@ fastify.get('/devices/:id', async (req, res) => {
     // Authentification du capteur
     const header = req.headers.authorization;
     const token = header?.startsWith("Bearer ") ? header.split(' ')[1] : null;
-    if(!token) return res.status(401).send({ error: 'Missing authorization token' });
-    
+    if (!token) return res.status(401).send({ error: 'Missing authorization token' });
+
     const device = await getDevice(id);
     const verify = device?.device_secret ? await verifyHash(device.device_secret, token) : false;
-    if(!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
+    if (!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
 
     return {
         deviceId: id,
@@ -140,14 +128,14 @@ fastify.post('/devices/:id/telemetry', async (req, res) => {
     // Authentification du capteur
     const header = req.headers.authorization;
     const token = header?.startsWith("Bearer ") ? header.split(' ')[1] : null;
-    if(!token) return res.status(401).send({ error: 'Missing authorization token' });
+    if (!token) return res.status(401).send({ error: 'Missing authorization token' });
 
     const device = await getDevice(id);
     const verify = device?.device_secret ? await verifyHash(device.device_secret, token) : false;
-    if(!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
+    if (!device || !verify) return res.status(401).send({ error: 'Unauthorized' });
 
     const payload = req.body as PayloadType;
-    if(payload.temperature && payload.airflow){
+    if (payload.temperature && payload.airflow) {
         await updateDevice(id, {
             deviceState: {
                 update: {
@@ -158,9 +146,6 @@ fastify.post('/devices/:id/telemetry', async (req, res) => {
             last_seen: new Date()
         });
         await upsertTelemetry(id, payload.temperature, payload.airflow);
-
-        // Publier MQTT pour que backend et WS reçoivent
-        mqttClient.publish(`devices/${id}/telemetry`, JSON.stringify(payload));
 
         // Push WebSocket direct
         broadcast(id, { event: 'telemetry', data: payload });
@@ -173,9 +158,25 @@ fastify.post('/devices/:id/telemetry', async (req, res) => {
 fastify.post('/devices/:id/command/temperature', async (req, res) => {
     const { id } = req.params as { id: string };
     const { targetTemperature } = req.body as { targetTemperature: number };
-    if(targetTemperature < 10 || targetTemperature > 30) return res.status(400).send({ error: 'Invalid target temperature. Must be between 10 and 30.' });
-    
-    mqttClient.publish(`devices/${id}/command`, JSON.stringify({ targetTemperature }), { qos: 1, retain: true });
+    if (targetTemperature < 10 || targetTemperature > 30) return res.status(400).send({ error: 'Invalid target temperature. Must be between 10 and 30.' });
+
+    const device = await getDevice(id);
+    if (device) {
+        let tempState: any = device.deviceState?.temperature || {};
+        if (typeof tempState !== 'object') tempState = {};
+        tempState.target = targetTemperature;
+
+        await updateDevice(id, {
+            deviceState: {
+                upsert: {
+                    create: { temperature: tempState },
+                    update: { temperature: tempState }
+                }
+            }
+        });
+    }
+
+    broadcast(id, { event: 'command', data: { targetTemperature } });
 
     return { targetTemperature };
 });
@@ -189,14 +190,23 @@ fastify.post('/devices/:id/command/fan', async (req, res) => {
     const { id } = req.params as { id: string };
     const { mode, speed } = req.body as {
         mode: FanMode;  // 'manual', 'auto'
-        speed: number;  // 0-100 (pour 'manual' uniquement)
+        speed: number;  // 0-255 (pour 'manual' uniquement)
     };
-    if(!FanMode.includes(mode)) return res.status(400).send({ error: 'Invalid fan state' });
-    if(speed < 0 || speed > 100) return res.status(400).send({ error: 'Invalid fan speed. Must be between 0 and 100.' });
+    if (!FanMode.includes(mode)) return res.status(400).send({ error: 'Invalid fan state' });
+    if (speed < 0 || speed > 255) return res.status(400).send({ error: 'Invalid fan speed. Must be between 0 and 255.' });
 
-    mqttClient.publish(`devices/${id}/command`, JSON.stringify({ fan: { mode, speed } }), { qos: 1, retain: true });
+    await updateDevice(id, {
+        deviceState: {
+            upsert: {
+                create: { fan_mode: mode, fan_speed: speed },
+                update: { fan_mode: mode, fan_speed: speed }
+            }
+        }
+    });
 
-    return { fan: { mode, speed }};
+    broadcast(id, { event: 'command', data: { fan: { mode, speed } } });
+
+    return { fan: { mode, speed } };
 });
 
 // -- Contrôler la trappe d'un capteur à distance (ouvrir/fermer/auto)
@@ -206,9 +216,18 @@ type TrapdoorState = typeof TrapdoorState[number];
 fastify.post('/devices/:id/command/trapdoor', async (req, res) => {
     const { id } = req.params as { id: string };
     const { state } = req.body as { state: TrapdoorState }; // 'open', 'close', 'auto'
-    if(!TrapdoorState.includes(state)) return res.status(400).send({ error: 'Invalid trapdoor state' });
+    if (!TrapdoorState.includes(state)) return res.status(400).send({ error: 'Invalid trapdoor state' });
 
-    mqttClient.publish(`devices/${id}/command`, JSON.stringify({ trapdoor: state }), { qos: 1, retain: true });
+    await updateDevice(id, {
+        deviceState: {
+            upsert: {
+                create: { trapdoor_state: state },
+                update: { trapdoor_state: state }
+            }
+        }
+    });
+
+    broadcast(id, { event: 'command', data: { trapdoor: state } });
 
     return { trapdoor: state };
 });

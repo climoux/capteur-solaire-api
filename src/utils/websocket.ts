@@ -1,16 +1,31 @@
-const clients = new Map();
+import { WebSocket } from 'ws';
 
 import { getDevice } from '../services/device.services.js';
+
+import { verifyHash } from './hash.js';
+
+const clients = new Map<string, Set<WebSocket>>();
 
 export const registerWS = (fastify: any) => {
     fastify.get('/ws/devices/:deviceId', { websocket: true }, async (conn: any, req: any) => {
         const { deviceId }: { deviceId: string } = req.params;
         const { token }: { token?: string } = req.query;
-        
-        const device = await getDevice(deviceId);
 
-        if (!device || device.device_secret !== token) {
-            conn.socket.close();
+        const socket: WebSocket = conn.socket;
+        if (!socket) return;
+
+        const device = await getDevice(deviceId);
+        const verify = (device?.device_secret && token) ? await verifyHash(device.device_secret, token) : false;
+
+        if (!device) {
+            console.log(`[WS] Connection rejected: Device ${deviceId} not found in database.`);
+            socket.close();
+            return;
+        }
+
+        if (!verify) {
+            console.log(`[WS] Connection rejected: Invalid token for device ${deviceId}.`);
+            socket.close();
             return;
         }
 
@@ -18,15 +33,25 @@ export const registerWS = (fastify: any) => {
             clients.set(deviceId, new Set());
         }
 
-        clients.get(deviceId)?.add(conn.socket);
+        clients.get(deviceId)?.add(socket);
 
-        conn.socket.send(JSON.stringify({
+        console.log(clients)
+
+        socket.send(JSON.stringify({
             event: 'connected',
             deviceId
         }));
 
-        conn.socket.on('close', () => {
-            clients.get(deviceId)?.delete(conn.socket);
+        socket.on('close', () => {
+            clients.get(deviceId)?.delete(socket);
+            if (clients.get(deviceId)?.size === 0) {
+                clients.delete(deviceId);
+            }
+        });
+
+        socket.on('error', (err) => {
+            console.error(`WebSocket error for device ${deviceId}:`, err);
+            clients.get(deviceId)?.delete(socket);
         });
     });
 }

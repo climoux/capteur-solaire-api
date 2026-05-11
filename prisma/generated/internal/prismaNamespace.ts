@@ -1080,48 +1080,6 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'CommandType'
- */
-export type EnumCommandTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandType'>
-    
-
-
-/**
- * Reference to a field of type 'CommandType[]'
- */
-export type ListEnumCommandTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandType[]'>
-    
-
-
-/**
- * Reference to a field of type 'CommandStatus'
- */
-export type EnumCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandStatus'>
-    
-
-
-/**
- * Reference to a field of type 'CommandStatus[]'
- */
-export type ListEnumCommandStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommandStatus[]'>
-    
-
-
-/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1136,30 +1094,58 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
- * Reference to a field of type 'FanMode'
+ * Reference to a field of type 'command_type'
  */
-export type EnumFanModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FanMode'>
+export type Enumcommand_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'command_type'>
     
 
 
 /**
- * Reference to a field of type 'FanMode[]'
+ * Reference to a field of type 'command_type[]'
  */
-export type ListEnumFanModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FanMode[]'>
+export type ListEnumcommand_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'command_type[]'>
     
 
 
 /**
- * Reference to a field of type 'EventType'
+ * Reference to a field of type 'command_status'
  */
-export type EnumEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventType'>
+export type Enumcommand_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'command_status'>
     
 
 
 /**
- * Reference to a field of type 'EventType[]'
+ * Reference to a field of type 'command_status[]'
  */
-export type ListEnumEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventType[]'>
+export type ListEnumcommand_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'command_status[]'>
+    
+
+
+/**
+ * Reference to a field of type 'fan_mode'
+ */
+export type Enumfan_modeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'fan_mode'>
+    
+
+
+/**
+ * Reference to a field of type 'fan_mode[]'
+ */
+export type ListEnumfan_modeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'fan_mode[]'>
+    
+
+
+/**
+ * Reference to a field of type 'event_type'
+ */
+export type Enumevent_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'event_type'>
+    
+
+
+/**
+ * Reference to a field of type 'event_type[]'
+ */
+export type ListEnumevent_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'event_type[]'>
     
 
 /**

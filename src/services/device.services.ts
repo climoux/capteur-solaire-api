@@ -15,7 +15,7 @@ export const getDevice = async (id: string) => {
             device_id: id
         },
         include: {
-          deviceState: true,
+            deviceState: true,
         },
     });
 }
@@ -32,7 +32,7 @@ export const insertDevice = async (id: string, pairingCode: string) => {
     const exists = await prisma.device.findFirst({
         where: { device_id: id }
     });
-    if(exists) return { ...exists };
+    if (exists) return { ...exists };
 
     const device = await prisma.device.create({
         data: { device_id: id }
@@ -53,6 +53,10 @@ export const updateDevice = async (id: string, data: any) => {
         where: {
             device_id: id
         },
-        data
+        data:{
+            deviceState: {
+                
+            }
+        }
     });
 }
