@@ -5,31 +5,89 @@ Cette API permet à l'application associée au projet de recevoir les données t
 
 *Fait partie de mon projet de Terminale STI2D de 2026.*
 
-![GitHub Repo stars](https://img.shields.io/github/stars/climoux/capteur-solaire-api)
+**Attention : cette API n'est pas encore terminée et ne sera plus mise à jour.**
+## Variables d'environnement
+
+Pour lancer l'API, vous devrez ajouter les variables d'environnement suivantes à votre fichier .env
+
+`PORT` (optionnel : le port par défaut est **5008**)
+
+`DATABASE_URL` (URL PostgreSQL : **postgresql://postgres:password@localhost:5432/database**)
+
+
+## Exécuter localement
+
+Clone le projet
+
+```bash
+  git clone https://github.com/climoux/capteur-solaire-api.git
+```
+
+Accéder au dossier du projet
+
+```bash
+  cd capteur-solaire-api
+```
+
+Installer les dépendances
+
+```bash
+  npm install
+```
+
+Lancer le serveur
+
+```bash
+  npm run start
+```
+
+
+## Déploiement
+
+Pour déployer ce projet, exécutez
+
+```bash
+  npm run build
+```
+
 
 ## Références API
 
-#### Get all items
+#### Enregistrer un nouveau appareil
 
 ```http
-  GET /api/items
+  POST /devices/register
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
+#### Se connecter à un appareil
 
 ```http
-  GET /api/items/${id}
+  POST /devices/pair
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+| Data          | Type     | Description                                     |
+| :------------ | :------- | :---------------------------------------------- |
+| `pairingCode` | `string` | **Requis**. Code pour se connecter à l'appareil |
 
-#### add(num1, num2)
+#### Avoir les données d'un appareil
 
-Takes two numbers and returns the sum.
+```http
+  GET /devices/:id
+```
 
+| Parameters | Type     | Description                  |
+| :--------- | :------- | :--------------------------- |
+| `id`       | `string` | **Requis**. ID de l'appareil |
+
+#### Supprimer un appareil
+
+```http
+  DELETE /devices/:id
+```
+
+| Parameters | Type     | Description                  |
+| :--------- | :------- | :--------------------------- |
+| `id`       | `string` | **Requis**. ID de l'appareil |
+## Licence
+
+Ce projet est protégé par la licence [MIT](https://choosealicense.com/licenses/mit/)
