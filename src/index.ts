@@ -28,7 +28,6 @@ async function startServer() {
 
     // -- CORS protection
     const whitelist = [
-        'https://sah.wevaw.com',
         process.env.NODE_ENV === 'development' && 'http://localhost:3000', // development only
     ].filter(Boolean);
 
